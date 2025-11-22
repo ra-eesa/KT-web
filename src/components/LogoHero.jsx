@@ -42,14 +42,14 @@ export default function LogoHero() {
             <div className="absolute inset-0 bg-gradient-radial from-kt-gold/5 via-kt-gold/2 to-transparent rounded-full blur-3xl animate-pulse-slow"></div>
             <div className="absolute inset-0 scale-75 bg-gradient-radial from-kt-gold/8 via-transparent to-transparent rounded-full blur-2xl"></div>
             
-            {/* Logo Image */}
+            {/* Main Logo Image (base layer) */}
             <img
               src="/logo-main.svg"
               alt="Kabir Technologies"
               className="relative w-full h-full object-contain drop-shadow-2xl z-10"
             />
 
-            {/* Interactive Hotspot Buttons */}
+            {/* Interactive Sector Icon Overlays */}
             {sectors.map((sector) => (
               <button
                 key={sector.id}
@@ -57,19 +57,26 @@ export default function LogoHero() {
                 onMouseLeave={() => setActiveSector(null)}
                 onClick={() => setActiveSector(sector)}
                 aria-label={`Learn about ${sector.name}`}
-                className="absolute w-16 h-16 -translate-x-1/2 -translate-y-1/2 rounded-full 
-                         hover:bg-kt-gold/20 hover:ring-4 hover:ring-kt-gold/30 hover:scale-110
-                         transition-all duration-300 cursor-pointer
-                         focus:outline-none focus:ring-4 focus:ring-kt-gold/50 z-20"
+                className="absolute -translate-x-1/2 -translate-y-1/2 
+                         transition-all duration-300 cursor-pointer group
+                         focus:outline-none z-20"
                 style={{
                   left: sector.hotspot.left,
                   top: sector.hotspot.top,
                 }}
               >
-                {/* Pulsing indicator dot */}
-                <span className="absolute inset-0 flex items-center justify-center">
-                  <span className="w-2 h-2 bg-kt-gold rounded-full animate-pulse-slow"></span>
-                </span>
+                {/* Sector Icon */}
+                <img
+                  src={sector.icon}
+                  alt={sector.name}
+                  className={`object-contain transition-all duration-300
+                           group-hover:scale-125 group-hover:drop-shadow-[0_0_12px_rgba(245,214,137,0.8)]
+                           group-focus:scale-125 group-focus:drop-shadow-[0_0_12px_rgba(245,214,137,0.8)]
+                           ${sector.id === 'space' ? 'w-16 h-16 md:w-20 md:h-20' : 'w-12 h-12 md:w-16 md:h-16'}`}
+                />
+                
+                {/* Subtle glow ring on hover */}
+                <span className="absolute inset-0 rounded-full bg-kt-gold/0 group-hover:bg-kt-gold/10 transition-all duration-300 -z-10 scale-150"></span>
               </button>
             ))}
           </div>
@@ -82,17 +89,17 @@ export default function LogoHero() {
           </div>
         </div>
 
-        {/* Title - BELOW LOGO */}
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-kt-cream text-center leading-tight">
-          Kabir Technologies
-        </h1>
+        {/* Hover Instruction - BELOW LOGO (replaces title) */}
+        <div className="text-center space-y-3 -mt-12">
+          <p className="text-kt-gold-light/90 text-base md:text-lg font-medium">
+            Hover over an icon to discover each sector
+          </p>
+          <p className="text-kt-grey text-sm md:text-base max-w-2xl leading-relaxed">
+            Turning complex, under-served problems into quietly powerful prototypes.
+          </p>
+        </div>
 
-        {/* Subtitle - BELOW TITLE */}
-        <p className="text-lg md:text-xl text-kt-grey text-center max-w-2xl leading-relaxed">
-          Turning complex, under-served problems into quietly powerful prototypes.
-        </p>
-
-        {/* MOBILE: Show sector card below subtitle */}
+        {/* MOBILE: Show sector card below instruction */}
         <div className="lg:hidden w-full max-w-xl">
           {activeSector && (
             <SectorCard sector={activeSector} position="center" />
