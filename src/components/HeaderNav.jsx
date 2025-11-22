@@ -39,7 +39,7 @@ export default function HeaderNav() {
           className="flex items-center gap-3 group"
         >
           <img
-            src="/logo-letters.svg"
+            src="logo-letters.svg"
             alt="KT"
             className="w-8 h-8 object-contain transition-transform group-hover:scale-110"
           />
