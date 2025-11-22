@@ -10,6 +10,8 @@ export const sectors = [
       "Heritage architects, conservation bodies, local authorities, and specialist surveying firms.",
     // Hotspot position (% from left, % from top)
     hotspot: { left: '20%', top: '75%' },
+    // Card position
+    cardPosition: 'left',
   },
   {
     id: 'agriculture',
@@ -21,6 +23,7 @@ export const sectors = [
     idealPartner:
       "Regulators, water authorities, and forward-looking agricultural cooperatives.",
     hotspot: { left: '75%', top: '75%' },
+    cardPosition: 'right',
   },
   {
     id: 'healthcare',
@@ -32,6 +35,7 @@ export const sectors = [
     idealPartner:
       "Clinicians, labs, and research groups who want to safely explore early-stage AI support tools.",
     hotspot: { left: '70%', top: '50%' },
+    cardPosition: 'left',
   },
   {
     id: 'biodiversity',
@@ -43,6 +47,7 @@ export const sectors = [
     idealPartner:
       "Ecologists, NGOs, national parks and environmental agencies.",
     hotspot: { left: '80%', top: '60%' },
+    cardPosition: 'right',
   },
   {
     id: 'space',
@@ -54,5 +59,6 @@ export const sectors = [
     idealPartner:
       "Space engineers, logistics researchers, and organisations exploring frontier operations.",
     hotspot: { left: '75%', top: '25%' },
+    cardPosition: 'left',
   },
 ];

@@ -22,46 +22,64 @@ export default function LogoHero() {
         </span>
       </div>
 
-      {/* CENTERED CONTENT */}
-      <div className="relative z-10 flex flex-col items-center space-y-12 max-w-5xl w-full">
+      {/* CENTERED CONTENT WITH SIDE CARDS */}
+      <div className="relative z-10 flex flex-col items-center space-y-12 max-w-7xl w-full">
         
-        {/* Main Logo - HERO */}
-        <div className="relative w-full max-w-md md:max-w-lg aspect-square flex items-center justify-center">
+        {/* LOGO + SIDE CARDS CONTAINER */}
+        <div className="relative w-full flex items-center justify-center">
           
-          {/* Glow effects behind logo */}
-          <div className="absolute inset-0 bg-gradient-radial from-kt-gold/5 via-kt-gold/2 to-transparent rounded-full blur-3xl animate-pulse-slow"></div>
-          <div className="absolute inset-0 scale-75 bg-gradient-radial from-kt-gold/8 via-transparent to-transparent rounded-full blur-2xl"></div>
-          
-          {/* Logo Image */}
-          <img
-            src="/logo-main.svg"
-            alt="Kabir Technologies"
-            className="relative w-full h-full object-contain drop-shadow-2xl z-10"
-          />
+          {/* LEFT SECTOR CARD */}
+          <div className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12">
+            {activeSector && activeSector.cardPosition === 'left' && (
+              <SectorCard sector={activeSector} position="left" />
+            )}
+          </div>
 
-          {/* Interactive Hotspot Buttons */}
-          {sectors.map((sector) => (
-            <button
-              key={sector.id}
-              onMouseEnter={() => setActiveSector(sector)}
-              onMouseLeave={() => setActiveSector(null)}
-              onClick={() => setActiveSector(sector)}
-              aria-label={`Learn about ${sector.name}`}
-              className="absolute w-16 h-16 -translate-x-1/2 -translate-y-1/2 rounded-full 
-                       hover:bg-kt-gold/20 hover:ring-4 hover:ring-kt-gold/30 hover:scale-110
-                       transition-all duration-300 cursor-pointer
-                       focus:outline-none focus:ring-4 focus:ring-kt-gold/50 z-20"
-              style={{
-                left: sector.hotspot.left,
-                top: sector.hotspot.top,
-              }}
-            >
-              {/* Pulsing indicator dot */}
-              <span className="absolute inset-0 flex items-center justify-center">
-                <span className="w-2 h-2 bg-kt-gold rounded-full animate-pulse-slow"></span>
-              </span>
-            </button>
-          ))}
+          {/* MAIN LOGO - BIGGER */}
+          <div className="relative w-full max-w-xl md:max-w-2xl aspect-square flex items-center justify-center">
+            
+            {/* Glow effects behind logo */}
+            <div className="absolute inset-0 bg-gradient-radial from-kt-gold/5 via-kt-gold/2 to-transparent rounded-full blur-3xl animate-pulse-slow"></div>
+            <div className="absolute inset-0 scale-75 bg-gradient-radial from-kt-gold/8 via-transparent to-transparent rounded-full blur-2xl"></div>
+            
+            {/* Logo Image */}
+            <img
+              src="/logo-main.svg"
+              alt="Kabir Technologies"
+              className="relative w-full h-full object-contain drop-shadow-2xl z-10"
+            />
+
+            {/* Interactive Hotspot Buttons */}
+            {sectors.map((sector) => (
+              <button
+                key={sector.id}
+                onMouseEnter={() => setActiveSector(sector)}
+                onMouseLeave={() => setActiveSector(null)}
+                onClick={() => setActiveSector(sector)}
+                aria-label={`Learn about ${sector.name}`}
+                className="absolute w-16 h-16 -translate-x-1/2 -translate-y-1/2 rounded-full 
+                         hover:bg-kt-gold/20 hover:ring-4 hover:ring-kt-gold/30 hover:scale-110
+                         transition-all duration-300 cursor-pointer
+                         focus:outline-none focus:ring-4 focus:ring-kt-gold/50 z-20"
+                style={{
+                  left: sector.hotspot.left,
+                  top: sector.hotspot.top,
+                }}
+              >
+                {/* Pulsing indicator dot */}
+                <span className="absolute inset-0 flex items-center justify-center">
+                  <span className="w-2 h-2 bg-kt-gold rounded-full animate-pulse-slow"></span>
+                </span>
+              </button>
+            ))}
+          </div>
+
+          {/* RIGHT SECTOR CARD */}
+          <div className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-12">
+            {activeSector && activeSector.cardPosition === 'right' && (
+              <SectorCard sector={activeSector} position="right" />
+            )}
+          </div>
         </div>
 
         {/* Title - BELOW LOGO */}
@@ -74,9 +92,11 @@ export default function LogoHero() {
           Turning complex, under-served problems into quietly powerful prototypes.
         </p>
 
-        {/* Dynamic Sector Card - CENTERED */}
-        <div className="w-full max-w-xl">
-          <SectorCard sector={activeSector} />
+        {/* MOBILE: Show sector card below subtitle */}
+        <div className="lg:hidden w-full max-w-xl">
+          {activeSector && (
+            <SectorCard sector={activeSector} position="center" />
+          )}
         </div>
 
         {/* Scroll Hint - BOTTOM CENTER */}
