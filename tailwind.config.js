@@ -7,8 +7,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        'kt-black': '#0a0a0b',
-        'kt-black-lighter': '#1a1a1b',
+        'kt-black': '#121214',
+        'kt-black-lighter': '#1c1c1e',
+        'kt-black-accent': '#0f0f10',
+        'kt-beige-dark': '#1a1815',
         'kt-cream': '#FAF8F3',
         'kt-cream-dark': '#F5F1E8',
         'kt-navy': '#0b1120',
@@ -20,7 +22,7 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['DM Sans', 'system-ui', 'sans-serif'],
+        display: ['Syne', 'system-ui', 'sans-serif'],
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',

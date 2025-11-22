@@ -1,13 +1,13 @@
+/* Import Google Fonts FIRST - Syne + Inter */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Inter:wght@300;400;500;600&display=swap');
-
 @layer base {
   body {
-    @apply bg-kt-cream text-kt-navy font-sans antialiased;
+    @apply bg-kt-black text-kt-cream font-sans antialiased;
   }
   
   h1, h2, h3, h4, h5, h6 {

@@ -3,19 +3,19 @@ import LogoHero from './components/LogoHero';
 
 function App() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-kt-black">
       <HeaderNav />
       
       <LogoHero />
 
       <main>
-        {/* About Section - Light */}
-        <section id="about" className="py-20 px-4 bg-kt-cream">
+        {/* About Section - Dark Beige */}
+        <section id="about" className="py-20 px-4 bg-kt-beige-dark">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-navy mb-6">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-6">
               Who we are
             </h2>
-            <p className="text-lg text-kt-navy/80 leading-relaxed">
+            <p className="text-lg text-kt-grey-light leading-relaxed">
               Kabir Technologies is a small deep-tech studio focused on overlooked
               problems in architecture, agriculture, healthcare, biodiversity and space. 
               We design and build early-stage AI-driven tools, then partner, license or 
@@ -24,16 +24,16 @@ function App() {
           </div>
         </section>
 
-        {/* Philosophy Section - White */}
-        <section id="philosophy" className="py-20 px-4 bg-white">
+        {/* Philosophy Section - Darkest for contrast */}
+        <section id="philosophy" className="py-20 px-4 bg-kt-black-accent">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-navy mb-8">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-8">
               Philosophy &amp; principles
             </h2>
             
             <div className="grid md:grid-cols-2 gap-12">
               <div>
-                <p className="text-lg text-kt-navy/80 leading-relaxed">
+                <p className="text-lg text-kt-grey-light leading-relaxed">
                   KT exists to build tools that quietly change how people work, not noisy 
                   demos that vanish in a year. We care about clarity, ethics and long-term utility.
                 </p>
@@ -60,12 +60,12 @@ function App() {
                 ].map((principle, i) => (
                   <div
                     key={i}
-                    className="p-4 rounded-xl bg-kt-cream border border-kt-gold/20 hover:border-kt-gold/40 transition-colors duration-200"
+                    className="p-4 rounded-xl bg-kt-forest/10 border border-kt-gold/20 hover:border-kt-gold/40 transition-colors duration-200"
                   >
-                    <h3 className="font-display font-semibold text-kt-navy mb-1">
+                    <h3 className="font-display font-semibold text-kt-gold-light mb-1">
                       {principle.title}
                     </h3>
-                    <p className="text-sm text-kt-navy/70">{principle.desc}</p>
+                    <p className="text-sm text-kt-grey">{principle.desc}</p>
                   </div>
                 ))}
               </div>
@@ -73,14 +73,14 @@ function App() {
           </div>
         </section>
 
-        {/* Sectors Section - Light */}
-        <section id="sectors" className="py-20 px-4 bg-kt-cream">
+        {/* Sectors Section - Dark Beige */}
+        <section id="sectors" className="py-20 px-4 bg-kt-beige-dark">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-navy mb-3">
+              <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-3">
                 Where we play
               </h2>
-              <p className="text-xl text-kt-navy/70">The Five Pillars</p>
+              <p className="text-xl text-kt-grey">The Five Pillars</p>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -108,25 +108,25 @@ function App() {
               ].map((sector, i) => (
                 <div
                   key={i}
-                  className="p-6 rounded-2xl bg-white border border-kt-gold/20 hover:border-kt-gold/50 hover:shadow-lg transition-all duration-300"
+                  className="p-6 rounded-2xl bg-kt-black border border-kt-gold/20 hover:border-kt-gold/50 hover:shadow-lg hover:shadow-kt-gold/5 transition-all duration-300"
                 >
-                  <h3 className="font-display font-semibold text-kt-navy text-lg mb-2">
+                  <h3 className="font-display font-semibold text-kt-cream text-lg mb-2">
                     {sector.name}
                   </h3>
-                  <p className="text-sm text-kt-navy/70">{sector.desc}</p>
+                  <p className="text-sm text-kt-grey">{sector.desc}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* KT Lab Section - White */}
-        <section id="lab" className="py-20 px-4 bg-white">
+        {/* KT Lab Section - Darkest */}
+        <section id="lab" className="py-20 px-4 bg-kt-black-accent">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-navy mb-6">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-6">
               KT Lab
             </h2>
-            <div className="space-y-4 text-lg text-kt-navy/80 leading-relaxed">
+            <div className="space-y-4 text-lg text-kt-grey-light leading-relaxed">
               <p>
                 KT Lab is the internal proto-lab where new tools are born. Some
                 experiments stay on the shelf; others become candidates for
@@ -140,10 +140,10 @@ function App() {
           </div>
         </section>
 
-        {/* Approach Section - Light */}
-        <section id="approach" className="py-20 px-4 bg-kt-cream">
+        {/* Approach Section - Dark */}
+        <section id="approach" className="py-20 px-4 bg-kt-beige-dark">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-navy mb-12 text-center">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-12 text-center">
               Approach
             </h2>
 
@@ -170,42 +170,42 @@ function App() {
                   desc: 'We help you integrate, or license/spin-out the tool while KT retains a share.',
                 },
               ].map((phase) => (
-                <div key={phase.step} className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-kt-gold-light to-kt-gold flex items-center justify-center shadow-lg">
+                <div key={phase.step} className="text-center group">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-kt-gold-light to-kt-gold flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <span className="text-white font-display font-bold text-lg">
                       {phase.step}
                     </span>
                   </div>
-                  <h3 className="font-display font-semibold text-kt-navy text-lg mb-2">
+                  <h3 className="font-display font-semibold text-kt-cream text-lg mb-2">
                     {phase.title}
                   </h3>
-                  <p className="text-sm text-kt-navy/70 leading-relaxed">{phase.desc}</p>
+                  <p className="text-sm text-kt-grey leading-relaxed">{phase.desc}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Contact Section - White */}
-        <section id="contact" className="py-20 px-4 bg-white">
+        {/* Contact Section - Darkest */}
+        <section id="contact" className="py-20 px-4 bg-kt-black-accent">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-navy mb-6">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-6">
               Work with us
             </h2>
-            <p className="text-lg text-kt-navy/80 leading-relaxed mb-8">
+            <p className="text-lg text-kt-grey-light leading-relaxed mb-8">
               Tell us about your sector, your problem, and what a successful prototype would look like.
             </p>
             <a
               href="mailto:hello@kabirtechnologies.com"
-              className="inline-block px-8 py-4 bg-gradient-to-r from-kt-gold-light to-kt-gold text-white font-medium rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-200"
+              className="inline-block px-8 py-4 bg-gradient-to-r from-kt-gold-light to-kt-gold text-white font-medium rounded-xl hover:shadow-lg hover:shadow-kt-gold/30 hover:scale-105 transition-all duration-200"
             >
-              hello@kabirtechnologies.com
+              hello@kabirtechnologies.co.uk
             </a>
           </div>
         </section>
       </main>
 
-      <footer className="bg-kt-black text-kt-grey-light py-8 px-4 border-t border-kt-gold/10">
+      <footer className="bg-kt-black text-kt-grey py-8 px-4 border-t border-kt-gold/10">
         <div className="max-w-7xl mx-auto text-center text-sm">
           <p>© {new Date().getFullYear()} Kabir Technologies. All rights reserved.</p>
         </div>
