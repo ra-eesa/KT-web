@@ -44,7 +44,7 @@ export default function LogoHero() {
             
             {/* Main Logo Image (base layer) */}
             <img
-              src="logo-main.svg"
+              src="/logo-main.svg"
               alt="Kabir Technologies"
               className="relative w-full h-full object-contain drop-shadow-2xl z-10"
             />
