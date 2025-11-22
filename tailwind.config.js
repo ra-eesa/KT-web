@@ -7,10 +7,11 @@ export default {
   theme: {
     extend: {
       colors: {
+        'kt-black': '#0a0a0b',
+        'kt-black-lighter': '#1a1a1b',
         'kt-cream': '#FAF8F3',
         'kt-cream-dark': '#F5F1E8',
         'kt-navy': '#0b1120',
-        'kt-navy-light': '#020617',
         'kt-forest': '#064E3B',
         'kt-gold-light': '#F5D689',
         'kt-gold': '#C1912F',

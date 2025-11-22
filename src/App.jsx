@@ -8,9 +8,9 @@ function App() {
       
       <LogoHero />
 
-      <main className="bg-kt-cream">
-        {/* About Section */}
-        <section id="about" className="py-20 px-4">
+      <main>
+        {/* About Section - Light */}
+        <section id="about" className="py-20 px-4 bg-kt-cream">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-navy mb-6">
               Who we are
@@ -24,7 +24,7 @@ function App() {
           </div>
         </section>
 
-        {/* Philosophy Section */}
+        {/* Philosophy Section - White */}
         <section id="philosophy" className="py-20 px-4 bg-white">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-navy mb-8">
@@ -60,7 +60,7 @@ function App() {
                 ].map((principle, i) => (
                   <div
                     key={i}
-                    className="p-4 rounded-xl bg-kt-cream border border-kt-gold/20"
+                    className="p-4 rounded-xl bg-kt-cream border border-kt-gold/20 hover:border-kt-gold/40 transition-colors duration-200"
                   >
                     <h3 className="font-display font-semibold text-kt-navy mb-1">
                       {principle.title}
@@ -73,8 +73,8 @@ function App() {
           </div>
         </section>
 
-        {/* Sectors Section */}
-        <section id="sectors" className="py-20 px-4">
+        {/* Sectors Section - Light */}
+        <section id="sectors" className="py-20 px-4 bg-kt-cream">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-navy mb-3">
@@ -120,7 +120,7 @@ function App() {
           </div>
         </section>
 
-        {/* KT Lab Section */}
+        {/* KT Lab Section - White */}
         <section id="lab" className="py-20 px-4 bg-white">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-navy mb-6">
@@ -140,10 +140,10 @@ function App() {
           </div>
         </section>
 
-        {/* Approach Section */}
-        <section id="approach" className="py-20 px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-navy mb-8">
+        {/* Approach Section - Light */}
+        <section id="approach" className="py-20 px-4 bg-kt-cream">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-navy mb-12 text-center">
               Approach
             </h2>
 
@@ -171,22 +171,22 @@ function App() {
                 },
               ].map((phase) => (
                 <div key={phase.step} className="text-center">
-                  <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-kt-gold/20 flex items-center justify-center">
-                    <span className="text-kt-gold font-display font-bold">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-kt-gold-light to-kt-gold flex items-center justify-center shadow-lg">
+                    <span className="text-white font-display font-bold text-lg">
                       {phase.step}
                     </span>
                   </div>
                   <h3 className="font-display font-semibold text-kt-navy text-lg mb-2">
                     {phase.title}
                   </h3>
-                  <p className="text-sm text-kt-navy/70">{phase.desc}</p>
+                  <p className="text-sm text-kt-navy/70 leading-relaxed">{phase.desc}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Contact Section */}
+        {/* Contact Section - White */}
         <section id="contact" className="py-20 px-4 bg-white">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-navy mb-6">
@@ -197,7 +197,7 @@ function App() {
             </p>
             <a
               href="mailto:hello@kabirtechnologies.com"
-              className="inline-block px-8 py-4 bg-kt-gold text-white font-medium rounded-xl hover:bg-kt-gold/90 transition-colors duration-200"
+              className="inline-block px-8 py-4 bg-gradient-to-r from-kt-gold-light to-kt-gold text-white font-medium rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-200"
             >
               hello@kabirtechnologies.com
             </a>
@@ -205,7 +205,7 @@ function App() {
         </section>
       </main>
 
-      <footer className="bg-kt-navy text-kt-grey-light py-8 px-4">
+      <footer className="bg-kt-black text-kt-grey-light py-8 px-4 border-t border-kt-gold/10">
         <div className="max-w-7xl mx-auto text-center text-sm">
           <p>© {new Date().getFullYear()} Kabir Technologies. All rights reserved.</p>
         </div>

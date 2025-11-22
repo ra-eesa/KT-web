@@ -28,7 +28,7 @@ export default function HeaderNav() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-kt-cream/95 backdrop-blur-md shadow-md py-4'
+          ? 'bg-kt-black/95 backdrop-blur-md shadow-lg shadow-kt-gold/5 py-4'
           : 'bg-transparent py-6'
       }`}
     >
@@ -39,11 +39,11 @@ export default function HeaderNav() {
           className="flex items-center gap-3 group"
         >
           <img
-            src="/logo-main.svg"
+            src="/logo-letters.svg"
             alt="KT"
             className="w-8 h-8 object-contain transition-transform group-hover:scale-110"
           />
-          <span className="font-display font-bold text-kt-navy text-lg hidden sm:block">
+          <span className="font-display font-bold text-kt-cream text-lg hidden sm:block">
             Kabir Technologies
           </span>
         </button>
@@ -54,7 +54,7 @@ export default function HeaderNav() {
             <button
               key={link.id}
               onClick={() => scrollToSection(link.id)}
-              className="px-4 py-2 text-sm font-medium text-kt-navy/70 hover:text-kt-navy hover:bg-kt-gold/10 rounded-lg transition-all duration-200"
+              className="px-4 py-2 text-sm font-medium text-kt-grey hover:text-kt-cream hover:bg-kt-gold/10 rounded-lg transition-all duration-200"
             >
               {link.label}
             </button>
@@ -62,7 +62,7 @@ export default function HeaderNav() {
         </div>
 
         {/* Mobile Menu Button */}
-        <button className="md:hidden p-2 text-kt-navy hover:bg-kt-gold/10 rounded-lg">
+        <button className="md:hidden p-2 text-kt-cream hover:bg-kt-gold/10 rounded-lg">
           <svg
             className="w-6 h-6"
             fill="none"
