@@ -5,9 +5,9 @@ export const sectors = [
     icon: "/icon-heritage.svg",
     strapline: "Intelligent tools for fragile built heritage.",
     description:
-      "We build computer-vision and data tools that help conservators monitor cracks, moisture, and structural stress in historic buildings. Instead of manual surveys every few years, our goal is continuous, unobtrusive insight into what's changing – before it becomes irreversible.",
+      "From structural monitoring and predictive maintenance to digital preservation and conservation planning, we develop AI-driven solutions that help protect and understand historic buildings and sites. Our work spans crack detection systems, climate impact modeling, restoration decision support, and accessibility enhancements for heritage spaces.",
     idealPartner:
-      "Heritage architects, conservation bodies, local authorities, and specialist surveying firms.",
+      "Heritage architects, conservation bodies, local authorities, museums, UNESCO sites, and specialist surveying firms.",
     hotspot: { left: "23%", top: "74%" },
     cardPosition: "left",
   },
@@ -17,9 +17,9 @@ export const sectors = [
     icon: "/icon-agriculture.svg",
     strapline: "Fair, transparent insight into land and water use.",
     description:
-      "We explore models that can highlight uneven water access, irrigation inefficiencies and emerging drought risks at the field or catchment level. The emphasis is on fairness and transparency – tools that both regulators and farmers can trust.",
+      "We build tools that address water equity, irrigation optimization, drought resilience, soil health monitoring, and sustainable farming practices. Our prototypes help visualize water access disparities, predict crop stress, optimize resource allocation, and support climate-adaptive agriculture across scales from individual farms to regional watersheds.",
     idealPartner:
-      "Regulators, water authorities, and forward-looking agricultural cooperatives.",
+      "Regulators, water authorities, agricultural cooperatives, sustainability consultants, and climate adaptation agencies.",
     hotspot: { left: "78%", top: "80.5%" },
     cardPosition: "right",
   },
@@ -29,9 +29,9 @@ export const sectors = [
     icon: "/icon-healthcare.svg",
     strapline: "Pattern recognition for subtle clinical signals.",
     description:
-      "Many clinical workflows still rely on visual pattern spotting and manual data entry. We prototype tools that help clinicians see subtle trends sooner – from imaging to lab results – with a focus on assistive decision support, not replacement.",
+      "Our healthcare tools focus on early detection, clinical decision support, diagnostic imaging analysis, patient monitoring, and workflow optimization. We develop AI assistants that help clinicians spot patterns in lab results, imaging data, and patient histories while maintaining human oversight and clinical judgment at the center of care.",
     idealPartner:
-      "Clinicians, labs, and research groups who want to safely explore early-stage AI support tools.",
+      "Clinicians, diagnostic labs, research hospitals, public health agencies, and medical device innovators exploring AI integration.",
     hotspot: { left: "50%", top: "79.5%" },
     cardPosition: "left",
   },
@@ -41,9 +41,9 @@ export const sectors = [
     icon: "/icon-biodiversity.svg",
     strapline: "Watching ecosystems on the edge.",
     description:
-      "From habitat monitoring to species presence signals, we build small tools that help researchers and land managers see change over time. The aim is to turn scattered, difficult data into a clear sense of direction: what's improving, and what's under threat.",
+      "We create monitoring and analysis tools for habitat tracking, species identification, ecosystem health assessment, climate impact modeling, and conservation prioritization. Our work helps researchers and land managers detect biodiversity changes, predict ecosystem vulnerabilities, optimize intervention strategies, and communicate environmental data clearly to stakeholders.",
     idealPartner:
-      "Ecologists, NGOs, national parks and environmental agencies.",
+      "Ecologists, conservation NGOs, national parks, environmental agencies, climate researchers, and wildlife management organizations.",
     hotspot: { left: "69.3%", top: "60.5%" },
     cardPosition: "right",
   },
@@ -53,9 +53,9 @@ export const sectors = [
     icon: "/icon-space.svg",
     strapline: "Simulating routes beyond the obvious.",
     description:
-      "We're interested in logistics at the edges: off-world operations, high-risk shipping routes, and future supply chains. Prototypes here focus on simulation and planning tools that help teams rehearse the weird edge cases before they happen.",
+      "From orbital logistics and mission planning to extreme environment operations and supply chain resilience, we build simulation and planning tools for high-stakes, complex scenarios. Our prototypes help teams model edge cases, optimize resource allocation in constrained environments, and prepare for operations where traditional approaches break down.",
     idealPartner:
-      "Space engineers, logistics researchers, and organisations exploring frontier operations.",
+      "Space agencies, logistics researchers, defense planners, frontier operations teams, and organizations exploring high-risk supply chains.",
     hotspot: { left: "50%", top: "33%" },
     cardPosition: "left",
   },
