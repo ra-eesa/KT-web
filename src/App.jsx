@@ -1,5 +1,6 @@
 import HeaderNav from './components/HeaderNav';
 import LogoHero from './components/LogoHero';
+import TetrisMazeBackground from './components/TetrisMazeBackground';
 
 function App() {
   return (
@@ -25,8 +26,9 @@ function App() {
         </section>
 
         {/* Philosophy Section - Darkest for contrast */}
-        <section id="philosophy" className="py-20 px-4 bg-kt-black-accent">
-          <div className="max-w-6xl mx-auto">
+        <section id="philosophy" className="py-20 px-4 bg-kt-black-accent relative overflow-hidden">
+          <TetrisMazeBackground />
+          <div className="max-w-6xl mx-auto relative" style={{ zIndex: 10, position: 'relative' }}>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-8">
               Philosophy &amp; principles
             </h2>
@@ -81,29 +83,32 @@ function App() {
                 Where we play
               </h2>
               <p className="text-xl text-kt-grey">The Five Pillars</p>
+              <p className="text-base text-kt-grey-light mt-4 max-w-3xl mx-auto">
+                These are the domains where we see opportunity for thoughtful, leverageable tools. Each represents areas we're actively exploring and where we're eager to partner with domain experts.
+              </p>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
                 {
                   name: 'Heritage & Architecture',
-                  desc: 'Intelligent tools for fragile built heritage.',
+                  desc: 'Structural monitoring, digital preservation, and conservation planning for historic sites.',
                 },
                 {
                   name: 'Agriculture & Water Systems',
-                  desc: 'Fair, transparent insight into land and water use.',
+                  desc: 'Water equity, irrigation optimization, and climate-adaptive farming practices.',
                 },
                 {
                   name: 'Healthcare & Diagnostics',
-                  desc: 'Pattern recognition for subtle clinical signals.',
+                  desc: 'Early detection, clinical decision support, and pattern recognition in medical data.',
                 },
                 {
                   name: 'Biodiversity & Climate',
-                  desc: 'Watching ecosystems on the edge.',
+                  desc: 'Habitat tracking, ecosystem health assessment, and conservation prioritization.',
                 },
                 {
                   name: 'Space & Frontier Systems',
-                  desc: 'Simulating routes beyond the obvious.',
+                  desc: 'Orbital logistics, mission planning, and extreme environment operations.',
                 },
               ].map((sector, i) => (
                 <div
@@ -121,8 +126,9 @@ function App() {
         </section>
 
         {/* KT Lab Section - Darkest */}
-        <section id="lab" className="py-20 px-4 bg-kt-black-accent">
-          <div className="max-w-4xl mx-auto">
+        <section id="lab" className="py-20 px-4 bg-kt-black-accent relative overflow-hidden">
+          <TetrisMazeBackground />
+          <div className="max-w-4xl mx-auto relative" style={{ zIndex: 10, position: 'relative' }}>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-6">
               KT Lab
             </h2>
@@ -141,8 +147,9 @@ function App() {
         </section>
 
         {/* Approach Section - Dark */}
-        <section id="approach" className="py-20 px-4 bg-kt-beige-dark">
-          <div className="max-w-5xl mx-auto">
+        <section id="approach" className="py-20 px-4 bg-kt-black-lighter relative overflow-hidden">
+          <TetrisMazeBackground />
+          <div className="max-w-5xl mx-auto relative" style={{ zIndex: 10, position: 'relative' }}>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-12 text-center">
               Approach
             </h2>
@@ -187,8 +194,9 @@ function App() {
         </section>
 
         {/* Contact Section - Darkest */}
-        <section id="contact" className="py-20 px-4 bg-kt-black-accent">
-          <div className="max-w-4xl mx-auto text-center">
+        <section id="contact" className="py-20 px-4 bg-kt-black-accent relative overflow-hidden">
+          <TetrisMazeBackground />
+          <div className="max-w-4xl mx-auto text-center relative" style={{ zIndex: 10, position: 'relative' }}>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-6">
               Work with us
             </h2>
@@ -199,7 +207,7 @@ function App() {
               href="mailto:hello@kabirtechnologies.com"
               className="inline-block px-8 py-4 bg-gradient-to-r from-kt-gold-light to-kt-gold text-white font-medium rounded-xl hover:shadow-lg hover:shadow-kt-gold/30 hover:scale-105 transition-all duration-200"
             >
-              hello@kabirtechnologies.co.uk
+              hello@kabirtechnologies.com
             </a>
           </div>
         </section>
