@@ -33,7 +33,7 @@ export default function SnakeMazeBackground() {
         elements.forEach(el => {
           const rect = el.getBoundingClientRect();
           
-          // Convert to canvas coordinates and add padding
+          // Convert to canvas display coordinates (not scaled) and add padding
           const padding = 20; // Add space around elements
           const obstacle = {
             x: rect.left - canvasRect.left - padding,
@@ -43,12 +43,13 @@ export default function SnakeMazeBackground() {
           };
           
           // Only add if it's within canvas bounds and has reasonable size
-          if (obstacle.x < canvas.width && 
-              obstacle.y < canvas.height && 
+          // Use canvasRect dimensions (display size) not canvas.width/height (internal size)
+          if (obstacle.x < canvasRect.width && 
+              obstacle.y < canvasRect.height && 
               obstacle.width > 0 && 
               obstacle.height > 0 &&
-              obstacle.width < canvas.width &&
-              obstacle.height < canvas.height) {
+              obstacle.width < canvasRect.width &&
+              obstacle.height < canvasRect.height) {
             obstacles.push(obstacle);
           }
         });
@@ -68,8 +69,20 @@ export default function SnakeMazeBackground() {
     };
 
     const setCanvasSize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      
+      // Set actual size in memory (scaled to account for DPI)
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      
+      // Scale context to ensure correct drawing operations
+      ctx.scale(dpr, dpr);
+      
+      // Set display size (css pixels)
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = rect.height + 'px';
+      
       updateObstacles();
     };
     
@@ -123,6 +136,7 @@ export default function SnakeMazeBackground() {
         this.direction = this.getRandomDirection();
         
         // Start position on grid - find a spot that doesn't collide
+        // Use display dimensions passed in, not canvas.width/height
         let startX, startY;
         let attempts = 0;
         const cols = Math.floor(canvasWidth / gridSize);
@@ -371,9 +385,13 @@ export default function SnakeMazeBackground() {
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Update and draw snakes
+      // Get display dimensions for snake logic
+      const displayWidth = canvas.getBoundingClientRect().width;
+      const displayHeight = canvas.getBoundingClientRect().height;
+
+      // Update and draw snakes using display dimensions
       snakesRef.current = snakesRef.current.filter(snake => {
-        snake.update(deltaTime, canvas.width, canvas.height);
+        snake.update(deltaTime, displayWidth, displayHeight);
         snake.draw(ctx);
         return !snake.isDead();
       });
@@ -381,7 +399,7 @@ export default function SnakeMazeBackground() {
       // Spawn new snakes
       timeSinceLastSpawn += deltaTime;
       if (timeSinceLastSpawn >= spawnInterval && snakesRef.current.length < maxSnakes) {
-        snakesRef.current.push(new MazeSnake(canvas.width, canvas.height));
+        snakesRef.current.push(new MazeSnake(displayWidth, displayHeight));
         timeSinceLastSpawn = 0;
       }
 
