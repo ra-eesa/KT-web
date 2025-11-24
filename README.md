@@ -113,11 +113,11 @@ The site is automatically deployed to GitHub Pages using GitHub Actions. Any pus
 
 ## 📝 License
 
-All rights reserved © 2024 Kabir Technologies
+All rights reserved © 2026 Kabir Technologies
 
 ## 📧 Contact
 
-For inquiries: hello@kabirtechnologies.com
+Coming soon
 
 ---
 
