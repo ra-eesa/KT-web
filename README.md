@@ -1,16 +1,124 @@
-# React + Vite
+# Kabir Technologies Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Official website for Kabir Technologies - a deep-tech studio focused on building AI-driven tools for overlooked problems in architecture, agriculture, healthcare, biodiversity, and space.
 
-Currently, two official plugins are available:
+## 🌐 Live Site
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[Visit Kabir Technologies](https://ra-eesa.github.io/KT-Web/)
 
-## React Compiler
+## 🎨 Design Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Animated Snake Maze Background**: Dynamic canvas-based animation with intelligent DOM collision detection that navigates around content elements
+- **Smooth Color Transitions**: Animated green gradient effects flowing through the maze paths
+- **Responsive Design**: Fully responsive layout that works seamlessly across all device sizes
+- **Gold & Dark Theme**: Sophisticated color scheme using gold accents on dark backgrounds
+- **Smooth Scroll Navigation**: One-page layout with smooth scrolling between sections
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React** - Frontend framework
+- **Vite** - Build tool and dev server
+- **Tailwind CSS** - Utility-first CSS framework
+- **HTML5 Canvas** - For animated background effects
+- **PostCSS** - CSS processing
+- **ESLint** - Code linting
+
+## 📁 Project Structure
+
+```
+KT-Web/
+├── public/           # Static assets (logo, favicon)
+├── src/              # Source files
+│   ├── components/   # React components
+│   └── main.jsx      # Application entry point
+├── index.html        # HTML entry point
+├── vite.config.js    # Vite configuration
+├── tailwind.config.js # Tailwind CSS configuration
+└── package.json      # Project dependencies
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/ra-eesa/KT-Web.git
+cd KT-Web
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. Open your browser and navigate to `http://localhost:5173`
+
+## 📦 Build for Production
+
+To create a production build:
+
+```bash
+npm run build
+```
+
+To preview the production build locally:
+
+```bash
+npm run preview
+```
+
+## 🎯 Key Sections
+
+- **About** - Introduction to Kabir Technologies
+- **Philosophy** - Core principles and values
+- **Sectors** - The five focus areas (Heritage & Architecture, Agriculture & Water Systems, Healthcare & Diagnostics, Biodiversity & Climate, Space & Frontier Systems)
+- **KT Lab** - Internal prototype laboratory
+- **Approach** - Four-step process (Discover, Prototype, Validate, Scale/Exit)
+- **Contact** - Get in touch
+
+## 🎨 Custom Features
+
+### Snake Maze Animation
+
+The background features a custom canvas-based animation that:
+- Generates animated "snake" paths that grow and fade
+- Intelligently avoids overlapping with text and content using DOM collision detection
+- Uses smooth interpolation for fluid movement
+- Implements easing functions for organic motion
+- Adapts to different screen sizes and pixel densities
+
+### Responsive Color System
+
+Custom Tailwind color palette including:
+- `kt-black` - Primary background
+- `kt-gold` - Brand accent color
+- `kt-cream` - Primary text color
+- `kt-forest` - Green accent
+- `kt-beige-dark` - Alternate background
+
+## 🌍 Deployment
+
+The site is automatically deployed to GitHub Pages using GitHub Actions. Any push to the main branch triggers a new deployment.
+
+## 📝 License
+
+All rights reserved © 2024 Kabir Technologies
+
+## 📧 Contact
+
+For inquiries: hello@kabirtechnologies.com
+
+---
+
+Built with ❤️ by Kabir Technologies
