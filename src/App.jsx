@@ -1,6 +1,6 @@
 import HeaderNav from './components/HeaderNav';
 import LogoHero from './components/LogoHero';
-import TetrisMazeBackground from './components/TetrisMazeBackground';
+import SnakeMazeBackground from './components/SnakeMazeBackground';
 
 function App() {
   return (
@@ -27,7 +27,7 @@ function App() {
 
         {/* Philosophy Section - Darkest for contrast */}
         <section id="philosophy" className="py-20 px-4 bg-kt-black-accent relative overflow-hidden">
-          <TetrisMazeBackground />
+          <SnakeMazeBackground />
           <div className="max-w-6xl mx-auto relative" style={{ zIndex: 10, position: 'relative' }}>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-8">
               Philosophy &amp; principles
@@ -127,7 +127,7 @@ function App() {
 
         {/* KT Lab Section - Darkest */}
         <section id="lab" className="py-20 px-4 bg-kt-black-accent relative overflow-hidden">
-          <TetrisMazeBackground />
+          <SnakeMazeBackground />
           <div className="max-w-4xl mx-auto relative" style={{ zIndex: 10, position: 'relative' }}>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-6">
               KT Lab
@@ -148,8 +148,7 @@ function App() {
 
         {/* Approach Section - Dark */}
         <section id="approach" className="py-20 px-4 bg-kt-black-lighter relative overflow-hidden">
-          <TetrisMazeBackground />
-          <div className="max-w-5xl mx-auto relative" style={{ zIndex: 10, position: 'relative' }}>
+          <div className="max-w-5xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-12 text-center">
               Approach
             </h2>
@@ -195,7 +194,7 @@ function App() {
 
         {/* Contact Section - Darkest */}
         <section id="contact" className="py-20 px-4 bg-kt-black-accent relative overflow-hidden">
-          <TetrisMazeBackground />
+          <SnakeMazeBackground />
           <div className="max-w-4xl mx-auto text-center relative" style={{ zIndex: 10, position: 'relative' }}>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-6">
               Work with us

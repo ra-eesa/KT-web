@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react';
 
-export default function TetrisMazeBackground() {
+export default function SnakeMazeBackground() {
   const canvasRef = useRef(null);
   const snakesRef = useRef([]);
   const animationFrameRef = useRef(null);
+  const obstaclesRef = useRef([]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -12,9 +13,64 @@ export default function TetrisMazeBackground() {
     const ctx = canvas.getContext('2d');
     const gridSize = 100;
     
+    // Function to detect content obstacles from DOM
+    const updateObstacles = () => {
+      const obstacles = [];
+      const canvasRect = canvas.getBoundingClientRect();
+      
+      // Query all content elements that should be avoided
+      const contentSelectors = [
+        'h1', 'h2', 'h3', 'h4', 'h5', 'h6', // Headers
+        'p', // Paragraphs
+        'a', // Links
+        'button', // Buttons
+        '[class*="rounded"]', // Cards and boxes with rounded classes
+        '[class*="border"]', // Elements with borders
+      ];
+      
+      contentSelectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(el => {
+          const rect = el.getBoundingClientRect();
+          
+          // Convert to canvas coordinates and add padding
+          const padding = 20; // Add space around elements
+          const obstacle = {
+            x: rect.left - canvasRect.left - padding,
+            y: rect.top - canvasRect.top - padding,
+            width: rect.width + padding * 2,
+            height: rect.height + padding * 2
+          };
+          
+          // Only add if it's within canvas bounds and has reasonable size
+          if (obstacle.x < canvas.width && 
+              obstacle.y < canvas.height && 
+              obstacle.width > 0 && 
+              obstacle.height > 0 &&
+              obstacle.width < canvas.width &&
+              obstacle.height < canvas.height) {
+            obstacles.push(obstacle);
+          }
+        });
+      });
+      
+      obstaclesRef.current = obstacles;
+    };
+
+    // Check if a point collides with any obstacle
+    const collidesWithObstacle = (x, y) => {
+      return obstaclesRef.current.some(obstacle => {
+        return x >= obstacle.x && 
+               x <= obstacle.x + obstacle.width &&
+               y >= obstacle.y && 
+               y <= obstacle.y + obstacle.height;
+      });
+    };
+
     const setCanvasSize = () => {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
+      updateObstacles();
     };
     
     setCanvasSize();
@@ -66,12 +122,19 @@ export default function TetrisMazeBackground() {
         this.lifeStage = 'growing'; // growing -> traveling -> fading
         this.direction = this.getRandomDirection();
         
-        // Start position on grid
+        // Start position on grid - find a spot that doesn't collide
+        let startX, startY;
+        let attempts = 0;
         const cols = Math.floor(canvasWidth / gridSize);
         const rows = Math.floor(canvasHeight / gridSize);
-        const startX = Math.floor(Math.random() * cols) * gridSize;
-        const startY = Math.floor(Math.random() * rows) * gridSize;
         
+        do {
+          startX = Math.floor(Math.random() * cols) * gridSize;
+          startY = Math.floor(Math.random() * rows) * gridSize;
+          attempts++;
+        } while (collidesWithObstacle(startX, startY) && attempts < 50);
+        
+        // If we couldn't find a spot after 50 attempts, just use the last attempt
         this.segments.push({ 
           x: startX, 
           y: startY, 
@@ -82,11 +145,12 @@ export default function TetrisMazeBackground() {
         });
         
         // Timing
-        this.growthRate = 600; // ms per segment (slightly faster for smoother feel)
+        this.growthRate = 600; // ms per segment
         this.timeSinceLastGrowth = 0;
         this.travelDuration = 3000; // Travel for 3 seconds
         this.fadeDuration = 2000; // Fade over 2 seconds
         this.interpolationSpeed = 0.003; // How fast segments move to target
+        this.stuckCounter = 0; // Track if snake is stuck
       }
 
       getRandomDirection() {
@@ -99,19 +163,51 @@ export default function TetrisMazeBackground() {
         return directions[Math.floor(Math.random() * directions.length)];
       }
 
-      changeDirection() {
+      findValidDirection(currentX, currentY, canvasWidth, canvasHeight) {
         const currentDir = this.direction;
-        const possibleDirs = [
+        
+        // Try all possible directions, prioritizing non-backward directions
+        const allDirections = [
           { dx: 1, dy: 0 },
           { dx: -1, dy: 0 },
           { dx: 0, dy: 1 },
           { dx: 0, dy: -1 }
-        ].filter(dir => 
-          // Don't go backwards
+        ];
+        
+        // Filter out backward direction
+        const forwardDirections = allDirections.filter(dir => 
           !(dir.dx === -currentDir.dx && dir.dy === -currentDir.dy)
         );
         
-        this.direction = possibleDirs[Math.floor(Math.random() * possibleDirs.length)];
+        // Shuffle directions for variety
+        const shuffled = [...forwardDirections].sort(() => Math.random() - 0.5);
+        
+        // Try each direction
+        for (const dir of shuffled) {
+          const newX = currentX + dir.dx * gridSize;
+          const newY = currentY + dir.dy * gridSize;
+          
+          // Check if valid (in bounds and not colliding)
+          if (newX >= 0 && newX < canvasWidth && 
+              newY >= 0 && newY < canvasHeight &&
+              !collidesWithObstacle(newX, newY)) {
+            return dir;
+          }
+        }
+        
+        // If no forward direction works, try backward as last resort
+        const backwardDir = { dx: -currentDir.dx, dy: -currentDir.dy };
+        const backX = currentX + backwardDir.dx * gridSize;
+        const backY = currentX + backwardDir.dy * gridSize;
+        
+        if (backX >= 0 && backX < canvasWidth && 
+            backY >= 0 && backY < canvasHeight &&
+            !collidesWithObstacle(backX, backY)) {
+          return backwardDir;
+        }
+        
+        // Completely stuck
+        return null;
       }
 
       update(deltaTime, canvasWidth, canvasHeight) {
@@ -148,26 +244,15 @@ export default function TetrisMazeBackground() {
           // Add new segment
           if (this.timeSinceLastGrowth >= this.growthRate && this.segments.length < this.maxLength) {
             const head = this.segments[this.segments.length - 1];
-            const newTargetX = head.targetX + this.direction.dx * gridSize;
-            const newTargetY = head.targetY + this.direction.dy * gridSize;
             
-            // Check bounds and possibly change direction
-            if (newTargetX < 0 || newTargetX >= canvasWidth || newTargetY < 0 || newTargetY >= canvasHeight) {
-              this.changeDirection();
-              const altX = head.targetX + this.direction.dx * gridSize;
-              const altY = head.targetY + this.direction.dy * gridSize;
+            // Find a valid direction
+            const validDir = this.findValidDirection(head.targetX, head.targetY, canvasWidth, canvasHeight);
+            
+            if (validDir) {
+              this.direction = validDir;
+              const newTargetX = head.targetX + this.direction.dx * gridSize;
+              const newTargetY = head.targetY + this.direction.dy * gridSize;
               
-              if (altX >= 0 && altX < canvasWidth && altY >= 0 && altY < canvasHeight) {
-                this.segments.push({ 
-                  x: head.x, // Start at current head position
-                  y: head.y,
-                  targetX: altX, 
-                  targetY: altY, 
-                  opacity: 0,
-                  interpolation: 0 
-                });
-              }
-            } else {
               this.segments.push({ 
                 x: head.x, // Start at current head position
                 y: head.y,
@@ -177,9 +262,22 @@ export default function TetrisMazeBackground() {
                 interpolation: 0 
               });
               
-              // Random chance to change direction
-              if (Math.random() < 0.3) {
-                this.changeDirection();
+              this.stuckCounter = 0;
+              
+              // Random chance to change direction (lower probability for maze-like behavior)
+              if (Math.random() < 0.2) {
+                const alternateDir = this.findValidDirection(newTargetX, newTargetY, canvasWidth, canvasHeight);
+                if (alternateDir) {
+                  this.direction = alternateDir;
+                }
+              }
+            } else {
+              // Snake is stuck, increment counter
+              this.stuckCounter++;
+              if (this.stuckCounter > 5) {
+                // Give up growing and move to traveling stage
+                this.lifeStage = 'traveling';
+                this.age = 0;
               }
             }
             
@@ -292,8 +390,12 @@ export default function TetrisMazeBackground() {
 
     animate();
 
+    // Update obstacles periodically (in case content changes)
+    const obstacleUpdateInterval = setInterval(updateObstacles, 2000);
+
     return () => {
       window.removeEventListener('resize', setCanvasSize);
+      clearInterval(obstacleUpdateInterval);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
