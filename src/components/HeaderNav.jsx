@@ -43,7 +43,7 @@ export default function HeaderNav() {
             alt="KT"
             className="w-8 h-8 object-contain transition-transform group-hover:scale-110"
           />
-          <span className="font-display font-bold text-kt-cream text-lg hidden sm:block">
+          <span className="font-display font-bold text-kt-gold-light text-lg hidden sm:block">
             Kabir Technologies
           </span>
         </button>

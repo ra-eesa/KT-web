@@ -13,7 +13,7 @@ function App() {
         {/* About Section - Dark Beige */}
         <section id="about" className="py-20 px-4 bg-kt-beige-dark">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-6">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-gold-light mb-6">
               Who we are
             </h2>
             <p className="text-lg text-kt-grey-light leading-relaxed">
@@ -29,13 +29,13 @@ function App() {
         <section id="philosophy" className="py-20 px-4 bg-kt-black-accent relative overflow-hidden">
           <SnakeMazeBackground />
           <div className="max-w-6xl mx-auto relative" style={{ zIndex: 10, position: 'relative' }}>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-8">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-gold-light mb-8">
               Philosophy &amp; principles
             </h2>
             
             <div className="grid md:grid-cols-2 gap-12">
               <div>
-                <p className="text-lg text-kt-grey-light leading-relaxed">
+                <p className="text-lg text-kt-cream leading-relaxed">
                   KT exists to build tools that quietly change how people work, not noisy 
                   demos that vanish in a year. We care about clarity, ethics and long-term utility.
                 </p>
@@ -79,10 +79,10 @@ function App() {
         <section id="sectors" className="py-20 px-4 bg-kt-beige-dark">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-3">
+              <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-gold-light mb-3">
                 Where we play
               </h2>
-              <p className="text-xl text-kt-grey">The Five Pillars</p>
+              <p className="text-xl text-kt-gold">The Five Pillars</p>
               <p className="text-base text-kt-grey-light mt-4 max-w-3xl mx-auto">
                 These are the domains where we see opportunity for thoughtful, leverageable tools. Each represents areas we're actively exploring and where we're eager to partner with domain experts.
               </p>
@@ -115,7 +115,7 @@ function App() {
                   key={i}
                   className="p-6 rounded-2xl bg-kt-black border border-kt-gold/20 hover:border-kt-gold/50 hover:shadow-lg hover:shadow-kt-gold/5 transition-all duration-300"
                 >
-                  <h3 className="font-display font-semibold text-kt-cream text-lg mb-2">
+                  <h3 className="font-display font-semibold text-kt-gold-light text-lg mb-2">
                     {sector.name}
                   </h3>
                   <p className="text-sm text-kt-grey">{sector.desc}</p>
@@ -129,10 +129,10 @@ function App() {
         <section id="lab" className="py-20 px-4 bg-kt-black-accent relative overflow-hidden">
           <SnakeMazeBackground />
           <div className="max-w-4xl mx-auto relative" style={{ zIndex: 10, position: 'relative' }}>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-6">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-gold-light mb-6">
               KT Lab
             </h2>
-            <div className="space-y-4 text-lg text-kt-grey-light leading-relaxed">
+            <div className="space-y-4 text-lg text-kt-cream leading-relaxed">
               <p>
                 KT Lab is the internal proto-lab where new tools are born. Some
                 experiments stay on the shelf; others become candidates for
@@ -149,7 +149,7 @@ function App() {
         {/* Approach Section - Dark */}
         <section id="approach" className="py-20 px-4 bg-kt-black-lighter relative overflow-hidden">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-12 text-center">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-gold-light mb-12 text-center">
               Approach
             </h2>
 
@@ -182,7 +182,7 @@ function App() {
                       {phase.step}
                     </span>
                   </div>
-                  <h3 className="font-display font-semibold text-kt-cream text-lg mb-2">
+                  <h3 className="font-display font-semibold text-kt-gold-light text-lg mb-2">
                     {phase.title}
                   </h3>
                   <p className="text-sm text-kt-grey leading-relaxed">{phase.desc}</p>
@@ -196,10 +196,10 @@ function App() {
         <section id="contact" className="py-20 px-4 bg-kt-black-accent relative overflow-hidden">
           <SnakeMazeBackground />
           <div className="max-w-4xl mx-auto text-center relative" style={{ zIndex: 10, position: 'relative' }}>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-cream mb-6">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-gold-light mb-6">
               Work with us
             </h2>
-            <p className="text-lg text-kt-grey-light leading-relaxed mb-8">
+            <p className="text-lg text-kt-cream leading-relaxed mb-8">
               Tell us about your sector, your problem, and what a successful prototype would look like.
             </p>
             <a
