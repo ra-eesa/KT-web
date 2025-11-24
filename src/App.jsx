@@ -177,7 +177,7 @@ function App() {
                 },
               ].map((phase) => (
                 <div key={phase.step} className="text-center group">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-kt-gold-light to-kt-gold flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <span className="text-white font-display font-bold text-lg">
                       {phase.step}
                     </span>
