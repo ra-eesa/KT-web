@@ -380,7 +380,7 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
   });
 
   test.describe('Visual regression - Screenshots', () => {
-    test.skip('should match hero section screenshot', async ({ page }) => {
+    test('should match hero section screenshot', async ({ page }) => {
       // This test creates baseline screenshots on first run
       // Run with: npx playwright test --update-snapshots
       // to create/update baseline screenshots
