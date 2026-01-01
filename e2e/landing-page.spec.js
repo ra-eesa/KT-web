@@ -381,6 +381,9 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
 
   test.describe('Visual regression - Screenshots', () => {
     test('should match hero section screenshot', async ({ page }) => {
+      // Skip in CI - visual regression works better locally where snapshots are generated
+      test.skip(!!process.env.CI, 'Screenshot tests run locally only');
+
       // This test creates baseline screenshots on first run
       // Run with: npx playwright test --update-snapshots
       // to create/update baseline screenshots
@@ -417,23 +420,31 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
     test('should have proper spacing between badge and logo on mobile', async ({ page, viewport }) => {
       test.skip(viewport.width >= 768, 'Mobile-only test');
 
-      // Get badge and logo elements
+      // Get badge, logo, and header elements
       const badge = page.locator('span:has-text("Early-stage deep tech studio")');
       const logo = page.locator('img[alt="Kabir Technologies"]');
+      const header = page.locator('header');
 
       await expect(badge).toBeVisible();
       await expect(logo).toBeVisible();
+      await expect(header).toBeVisible();
 
       // Get bounding boxes
       const badgeBox = await badge.boundingBox();
       const logoBox = await logo.boundingBox();
+      const headerBox = await header.boundingBox();
 
-      // Calculate the gap: positive means separation, negative means overlap
-      const gap = logoBox.y - (badgeBox.y + badgeBox.height);
+      // Calculate the gap between badge and logo
+      const badgeToLogoGap = logoBox.y - (badgeBox.y + badgeBox.height);
 
-      // Should have proper clearance - badge should be well above the logo
-      // Expecting at least 0px gap (no overlap)
-      expect(gap).toBeGreaterThanOrEqual(0);
+      // Calculate the distance from header to badge
+      const headerToBadgeGap = badgeBox.y - (headerBox.y + headerBox.height);
+
+      // Should have proper clearance - badge should be well above the logo (no overlap)
+      expect(badgeToLogoGap).toBeGreaterThanOrEqual(0);
+
+      // Badge should have reasonable spacing from header (at least 20px)
+      expect(headerToBadgeGap).toBeGreaterThanOrEqual(20);
     });
 
   });
