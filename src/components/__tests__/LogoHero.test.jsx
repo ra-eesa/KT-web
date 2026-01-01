@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import LogoHero from '../LogoHero';
 
 describe('LogoHero - Landing Page Load Tests', () => {
@@ -117,7 +117,7 @@ describe('LogoHero - Landing Page Load Tests', () => {
     });
 
     it('should have space icon larger than other icons', () => {
-      const { container } = render(<LogoHero />);
+      render(<LogoHero />);
 
       const spaceIcon = screen.getByAltText('Space & Frontier Systems');
       const heritageIcon = screen.getByAltText('Heritage & Architecture');

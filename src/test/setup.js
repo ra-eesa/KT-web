@@ -1,4 +1,4 @@
-import { expect, afterEach, vi } from 'vitest';
+import { afterEach, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 
@@ -8,7 +8,7 @@ afterEach(() => {
 });
 
 // Mock IntersectionObserver (used by scroll effects)
-global.IntersectionObserver = class IntersectionObserver {
+globalThis.IntersectionObserver = class IntersectionObserver {
   constructor() {}
   disconnect() {}
   observe() {}
@@ -19,8 +19,8 @@ global.IntersectionObserver = class IntersectionObserver {
 };
 
 // Mock requestAnimationFrame for animations
-global.requestAnimationFrame = (cb) => setTimeout(cb, 0);
-global.cancelAnimationFrame = (id) => clearTimeout(id);
+globalThis.requestAnimationFrame = (cb) => setTimeout(cb, 0);
+globalThis.cancelAnimationFrame = (id) => clearTimeout(id);
 
 // Mock matchMedia for responsive tests
 Object.defineProperty(window, 'matchMedia', {

@@ -3,7 +3,6 @@ import { render, waitFor } from '@testing-library/react';
 import SnakeMazeBackground from '../SnakeMazeBackground';
 
 describe('SnakeMazeBackground - Landing Page Load Tests', () => {
-  let mockCanvas;
   let mockContext;
 
   beforeEach(() => {
