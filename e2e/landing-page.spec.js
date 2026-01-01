@@ -169,7 +169,7 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
     test('should navigate to About section via header link (desktop)', async ({ page, viewport }) => {
       test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
 
-      const aboutButton = page.locator('nav button', { hasText: 'About' });
+      const aboutButton = page.locator('header div.hidden.md\\:flex button', { hasText: 'About' });
       await aboutButton.click();
       await page.waitForTimeout(1000);
 
@@ -180,7 +180,7 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
     test('should navigate to Philosophy section via header link (desktop)', async ({ page, viewport }) => {
       test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
 
-      const philosophyButton = page.locator('nav button', { hasText: 'Philosophy' });
+      const philosophyButton = page.locator('header div.hidden.md\\:flex button', { hasText: 'Philosophy' });
       await philosophyButton.click();
       await page.waitForTimeout(1000);
 
@@ -191,7 +191,7 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
     test('should navigate to Sectors section via header link (desktop)', async ({ page, viewport }) => {
       test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
 
-      const sectorsButton = page.locator('nav button', { hasText: 'Sectors' });
+      const sectorsButton = page.locator('header div.hidden.md\\:flex button', { hasText: 'Sectors' });
       await sectorsButton.click();
       await page.waitForTimeout(1000);
 
@@ -202,7 +202,7 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
     test('should navigate to Lab section via header link (desktop)', async ({ page, viewport }) => {
       test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
 
-      const labButton = page.locator('nav button', { hasText: 'KT Lab' });
+      const labButton = page.locator('header div.hidden.md\\:flex button', { hasText: 'KT Lab' });
       await labButton.click();
       await page.waitForTimeout(1000);
 
@@ -213,7 +213,7 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
     test('should navigate to Approach section via header link (desktop)', async ({ page, viewport }) => {
       test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
 
-      const approachButton = page.locator('nav button', { hasText: 'Approach' });
+      const approachButton = page.locator('header div.hidden.md\\:flex button', { hasText: 'Approach' });
       await approachButton.click();
       await page.waitForTimeout(1000);
 
@@ -224,7 +224,7 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
     test('should navigate to Contact section via header link (desktop)', async ({ page, viewport }) => {
       test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
 
-      const contactButton = page.locator('nav button', { hasText: 'Contact' });
+      const contactButton = page.locator('header div.hidden.md\\:flex button', { hasText: 'Contact' });
       await contactButton.click();
       await page.waitForTimeout(1000);
 
@@ -236,7 +236,7 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
       test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
 
       // First scroll down to Contact section
-      const contactButton = page.locator('nav button', { hasText: 'Contact' });
+      const contactButton = page.locator('header div.hidden.md\\:flex button', { hasText: 'Contact' });
       await contactButton.click();
       await page.waitForTimeout(1000);
 
@@ -262,6 +262,104 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
       );
 
       expect(scrollBehavior).toBe('smooth');
+    });
+  });
+
+  test.describe('Mobile Menu', () => {
+    test('should show hamburger menu button on mobile', async ({ page, viewport }) => {
+      test.skip(viewport.width >= 768, 'Mobile-only test');
+
+      const hamburgerButton = page.locator('header button[aria-label*="menu"]');
+      await expect(hamburgerButton).toBeVisible();
+    });
+
+    test('should open mobile menu when hamburger clicked', async ({ page, viewport }) => {
+      test.skip(viewport.width >= 768, 'Mobile-only test');
+
+      const hamburgerButton = page.locator('header button[aria-label*="menu"]');
+      await hamburgerButton.click();
+
+      // Mobile menu should be visible
+      const mobileMenu = page.locator('[role="dialog"]').or(page.locator('nav[aria-label*="mobile"]'));
+      await expect(mobileMenu).toBeVisible();
+    });
+
+    test('should display all navigation links in mobile menu', async ({ page, viewport }) => {
+      test.skip(viewport.width >= 768, 'Mobile-only test');
+
+      // Open menu
+      const hamburgerButton = page.locator('header button[aria-label*="menu"]');
+      await hamburgerButton.click();
+      await page.waitForTimeout(500);
+
+      // Check all links are present in the mobile menu
+      const mobileNav = page.locator('nav[role="dialog"]');
+      const navLinks = ['About', 'Philosophy', 'Sectors', 'KT Lab', 'Approach', 'Contact'];
+      for (const linkText of navLinks) {
+        const link = mobileNav.locator('button', { hasText: linkText });
+        await expect(link).toBeVisible();
+      }
+    });
+
+    test('should close menu when close button clicked', async ({ page, viewport }) => {
+      test.skip(viewport.width >= 768, 'Mobile-only test');
+
+      // Open menu
+      const hamburgerButton = page.locator('header button[aria-label*="menu"]');
+      await hamburgerButton.click();
+      await page.waitForTimeout(300);
+
+      // Close menu by clicking hamburger button again (which is now a close button)
+      await hamburgerButton.click();
+      await page.waitForTimeout(400);
+
+      // Menu should be translated off-screen
+      const mobileMenu = page.locator('nav[role="dialog"]');
+      const menuClasses = await mobileMenu.getAttribute('class');
+      expect(menuClasses).toContain('translate-x-full');
+    });
+
+    test('should close menu and scroll when navigation link clicked', async ({ page, viewport }) => {
+      test.skip(viewport.width >= 768, 'Mobile-only test');
+
+      // Open menu
+      const hamburgerButton = page.locator('header button[aria-label*="menu"]');
+      await hamburgerButton.click();
+      await page.waitForTimeout(300);
+
+      // Click About link in mobile menu
+      const mobileNav = page.locator('nav[role="dialog"]');
+      const aboutLink = mobileNav.locator('button', { hasText: 'About' });
+      await aboutLink.click();
+
+      // Wait for transition to complete
+      await page.waitForTimeout(400);
+
+      // Menu should have translated off-screen
+      const menuClasses = await mobileNav.getAttribute('class');
+      expect(menuClasses).toContain('translate-x-full');
+
+      // Page should scroll
+      const scrollY = await page.evaluate(() => window.scrollY);
+      expect(scrollY).toBeGreaterThan(100);
+    });
+
+    test('should animate menu smoothly', async ({ page, viewport }) => {
+      test.skip(viewport.width >= 768, 'Mobile-only test');
+
+      const hamburgerButton = page.locator('header button[aria-label*="menu"]');
+
+      // Open menu and check for transition
+      await hamburgerButton.click();
+      await page.waitForTimeout(100);
+
+      const mobileMenu = page.locator('[role="dialog"]').or(page.locator('nav[aria-label*="mobile"]'));
+      const hasTransition = await mobileMenu.evaluate((el) => {
+        const style = window.getComputedStyle(el);
+        return style.transition !== 'all 0s ease 0s' && style.transition !== '';
+      });
+
+      expect(hasTransition).toBeTruthy();
     });
   });
 
