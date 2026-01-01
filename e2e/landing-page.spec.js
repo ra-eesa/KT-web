@@ -134,26 +134,26 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
     });
   });
 
-  test.describe('Interactive features', () => {
-    test('should show sector card on hover (desktop)', async ({ page, viewport }) => {
-      // Skip on mobile
+  test.describe('Sector Interaction', () => {
+    test('should allow hovering over all 5 sector icons without errors (desktop)', async ({ page, viewport }) => {
       test.skip(viewport.width < 1024, 'Desktop-only test');
 
-      // Wait for page to be ready
       await page.waitForLoadState('networkidle');
 
-      // Hover over Heritage icon
-      const heritageButton = page.locator('button[aria-label*="Heritage"]');
-      await heritageButton.hover();
+      const sectors = ['Heritage', 'Agriculture', 'Healthcare', 'Biodiversity', 'Space'];
 
-      // Wait for sector card to appear - the text might already be in the DOM
-      // Just check that hovering doesn't cause errors
-      await page.waitForTimeout(500);
+      for (const sector of sectors) {
+        const button = page.locator(`button[aria-label*="${sector}"]`);
+        await button.hover();
+        await page.waitForTimeout(100);
 
-      // Verify the heritage button is still visible after hover
-      await expect(heritageButton).toBeVisible();
+        // Verify button is still visible after hover (no JavaScript errors)
+        await expect(button).toBeVisible();
+      }
     });
+  });
 
+  test.describe('Interactive features', () => {
     test('should scroll to About section when clicking "Enter the maze"', async ({ page }) => {
       const scrollButton = page.getByRole('button', { name: /enter the maze/i });
       await scrollButton.click();
