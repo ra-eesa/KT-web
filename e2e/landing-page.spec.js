@@ -265,6 +265,22 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
     });
   });
 
+  test.describe('Contact', () => {
+    test('should have mailto link with correct email address', async ({ page }) => {
+      const emailLink = page.locator('a[href^="mailto:"]');
+      await expect(emailLink).toBeVisible();
+      await expect(emailLink).toHaveAttribute('href', 'mailto:info@kabirtechnologies.co.uk');
+    });
+
+    test('should display contact section with correct heading', async ({ page }) => {
+      const contactSection = page.locator('section#contact');
+      await expect(contactSection).toBeVisible();
+
+      const heading = contactSection.locator('h2', { hasText: 'Work with us' });
+      await expect(heading).toBeVisible();
+    });
+  });
+
   test.describe('Visual regression - Screenshots', () => {
     test.skip('should match hero section screenshot', async ({ page }) => {
       // This test creates baseline screenshots on first run

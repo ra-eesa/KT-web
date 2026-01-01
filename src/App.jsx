@@ -203,7 +203,7 @@ function App() {
               Tell us about your sector, your problem, and what a successful prototype would look like.
             </p>
             <a
-              href="mailto:hello@kabirtechnologies.com"
+              href="mailto:info@kabirtechnologies.co.uk"
               className="inline-block px-8 py-4 bg-gradient-to-r from-kt-gold-light to-kt-gold text-white font-medium rounded-xl hover:shadow-lg hover:shadow-kt-gold/30 hover:scale-105 transition-all duration-200"
             >
               contact information coming soon

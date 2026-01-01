@@ -18,12 +18,13 @@ npm test
 
 ## What's Tested
 
-**Landing Page & Core User Journey** (71 automated tests)
+**Landing Page & Core User Journey** (75 automated tests)
 - Logo and hero section rendering
 - All 5 sector icons display and positioning
 - Snake maze canvas initialization
 - Sector hover interactions (desktop)
 - Navigation flow (all header links, scroll behavior)
+- Contact functionality (email link verification)
 - Mobile responsiveness
 - Performance benchmarks
 
