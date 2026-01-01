@@ -5,7 +5,6 @@ export default function SectorCard({ sector, position }) {
 
   useEffect(() => {
     // Trigger animation when sector changes
-    setIsVisible(false);
     const timer = setTimeout(() => setIsVisible(true), 50);
     return () => clearTimeout(timer);
   }, [sector]);

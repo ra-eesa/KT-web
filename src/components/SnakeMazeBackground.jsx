@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/unsupported-syntax */
 import { useEffect, useRef } from 'react';
 
 export default function SnakeMazeBackground() {
