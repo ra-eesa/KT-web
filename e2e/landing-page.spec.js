@@ -153,7 +153,7 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
     });
   });
 
-  test.describe('Interactive features', () => {
+  test.describe('Navigation Flow', () => {
     test('should scroll to About section when clicking "Enter the maze"', async ({ page }) => {
       const scrollButton = page.getByRole('button', { name: /enter the maze/i });
       await scrollButton.click();
@@ -164,6 +164,104 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
       // Check that we've scrolled down
       const scrollY = await page.evaluate(() => window.scrollY);
       expect(scrollY).toBeGreaterThan(100);
+    });
+
+    test('should navigate to About section via header link (desktop)', async ({ page, viewport }) => {
+      test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
+
+      const aboutButton = page.locator('nav button', { hasText: 'About' });
+      await aboutButton.click();
+      await page.waitForTimeout(1000);
+
+      const scrollY = await page.evaluate(() => window.scrollY);
+      expect(scrollY).toBeGreaterThan(100);
+    });
+
+    test('should navigate to Philosophy section via header link (desktop)', async ({ page, viewport }) => {
+      test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
+
+      const philosophyButton = page.locator('nav button', { hasText: 'Philosophy' });
+      await philosophyButton.click();
+      await page.waitForTimeout(1000);
+
+      const scrollY = await page.evaluate(() => window.scrollY);
+      expect(scrollY).toBeGreaterThan(100);
+    });
+
+    test('should navigate to Sectors section via header link (desktop)', async ({ page, viewport }) => {
+      test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
+
+      const sectorsButton = page.locator('nav button', { hasText: 'Sectors' });
+      await sectorsButton.click();
+      await page.waitForTimeout(1000);
+
+      const scrollY = await page.evaluate(() => window.scrollY);
+      expect(scrollY).toBeGreaterThan(100);
+    });
+
+    test('should navigate to Lab section via header link (desktop)', async ({ page, viewport }) => {
+      test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
+
+      const labButton = page.locator('nav button', { hasText: 'KT Lab' });
+      await labButton.click();
+      await page.waitForTimeout(1000);
+
+      const scrollY = await page.evaluate(() => window.scrollY);
+      expect(scrollY).toBeGreaterThan(100);
+    });
+
+    test('should navigate to Approach section via header link (desktop)', async ({ page, viewport }) => {
+      test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
+
+      const approachButton = page.locator('nav button', { hasText: 'Approach' });
+      await approachButton.click();
+      await page.waitForTimeout(1000);
+
+      const scrollY = await page.evaluate(() => window.scrollY);
+      expect(scrollY).toBeGreaterThan(100);
+    });
+
+    test('should navigate to Contact section via header link (desktop)', async ({ page, viewport }) => {
+      test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
+
+      const contactButton = page.locator('nav button', { hasText: 'Contact' });
+      await contactButton.click();
+      await page.waitForTimeout(1000);
+
+      const scrollY = await page.evaluate(() => window.scrollY);
+      expect(scrollY).toBeGreaterThan(100);
+    });
+
+    test('should return to top when clicking logo in header (desktop)', async ({ page, viewport }) => {
+      test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
+
+      // First scroll down to Contact section
+      const contactButton = page.locator('nav button', { hasText: 'Contact' });
+      await contactButton.click();
+      await page.waitForTimeout(1000);
+
+      // Verify we've scrolled down
+      let scrollY = await page.evaluate(() => window.scrollY);
+      expect(scrollY).toBeGreaterThan(100);
+
+      // Click logo button in header to return to top
+      const logoButton = page.locator('header button img[alt="KT"]');
+      await logoButton.click();
+      await page.waitForTimeout(1000);
+
+      // Verify we're back at the top
+      scrollY = await page.evaluate(() => window.scrollY);
+      expect(scrollY).toBeLessThan(100);
+    });
+
+    test('should use smooth scroll behavior for all navigation', async ({ page }) => {
+      // Check that scroll-behavior: smooth is applied
+      const htmlElement = page.locator('html');
+      const scrollBehavior = await htmlElement.evaluate((el) =>
+        window.getComputedStyle(el).scrollBehavior
+      );
+
+      expect(scrollBehavior).toBe('smooth');
     });
   });
 
