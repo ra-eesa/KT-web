@@ -413,6 +413,29 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
       const scrollButton = page.getByRole('button', { name: /enter the maze/i });
       await expect(scrollButton).toBeVisible();
     });
+
+    test('should have proper spacing between badge and logo on mobile', async ({ page, viewport }) => {
+      test.skip(viewport.width >= 768, 'Mobile-only test');
+
+      // Get badge and logo elements
+      const badge = page.locator('span:has-text("Early-stage deep tech studio")');
+      const logo = page.locator('img[alt="Kabir Technologies"]');
+
+      await expect(badge).toBeVisible();
+      await expect(logo).toBeVisible();
+
+      // Get bounding boxes
+      const badgeBox = await badge.boundingBox();
+      const logoBox = await logo.boundingBox();
+
+      // Calculate the gap: positive means separation, negative means overlap
+      const gap = logoBox.y - (badgeBox.y + badgeBox.height);
+
+      // Should have proper clearance - badge should be well above the logo
+      // Expecting at least 0px gap (no overlap)
+      expect(gap).toBeGreaterThanOrEqual(0);
+    });
+
   });
 
   test.describe('Performance', () => {

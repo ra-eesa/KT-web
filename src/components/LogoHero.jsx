@@ -16,14 +16,14 @@ export default function LogoHero() {
       <div className="absolute inset-0 bg-gradient-to-br from-kt-black-lighter/20 via-transparent to-kt-black-lighter/10 pointer-events-none"></div>
       
       {/* Early-stage badge - LEFT SIDE */}
-      <div className="absolute top-32 left-8 md:left-16 z-10">
+      <div className="absolute top-16 md:top-32 left-8 md:left-16 z-10">
         <span className="inline-block text-[10px] font-semibold uppercase tracking-[0.2em] text-kt-gold-light bg-kt-forest/20 border border-kt-gold/30 px-5 py-2.5 rounded-full">
           Early-stage deep tech studio
         </span>
       </div>
 
       {/* CENTERED CONTENT WITH SIDE CARDS */}
-      <div className="relative z-10 flex flex-col items-center space-y-12 max-w-7xl w-full">
+      <div className="relative z-10 flex flex-col items-center space-y-12 max-w-7xl w-full mt-20 md:mt-0">
         
         {/* LOGO + SIDE CARDS CONTAINER */}
         <div className="relative w-full flex items-center justify-center">
