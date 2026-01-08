@@ -14,13 +14,15 @@ export default function SectorCard({ sector, position }) {
   }
 
   // Determine slide direction based on position
-  const slideClass = position === 'left' 
+  const slideClass = position === 'center'
+    ? (isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4')
+    : position === 'left'
     ? (isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8')
     : (isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8');
 
   return (
     <div
-      className={`bg-kt-black-lighter/80 backdrop-blur-md rounded-2xl p-6 border border-kt-gold/30 shadow-2xl transition-all duration-500 ${slideClass} max-w-sm`}
+      className={`bg-kt-black-lighter/80 backdrop-blur-md rounded-2xl p-6 border border-kt-gold/30 shadow-2xl transition-all duration-500 ${slideClass} ${position === 'center' ? 'w-full' : 'max-w-sm'}`}
     >
       <div className="flex items-start gap-4 mb-4">
         <img

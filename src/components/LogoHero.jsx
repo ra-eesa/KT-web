@@ -1,9 +1,58 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { sectors } from '../data/sectors';
 import SectorCard from './SectorCard';
 
 export default function LogoHero() {
   const [activeSector, setActiveSector] = useState(null);
+  const sectorCardRef = useRef(null);
+
+  // Handle click outside to close card on mobile
+  useEffect(() => {
+    if (!activeSector) return;
+
+    const handleClickOutside = (event) => {
+      // Only on mobile (check window width directly for immediate response)
+      if (window.innerWidth >= 1024) return;
+
+      // Check if click is outside sector card and not on a sector button
+      const isClickOnButton = event.target.closest('[data-sector-button]');
+      const isClickOnCard = sectorCardRef.current?.contains(event.target);
+
+      if (!isClickOnButton && !isClickOnCard) {
+        setActiveSector(null);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [activeSector]);
+
+  const handleSectorClick = (sector) => {
+    // Check if mobile at click time
+    const isMobileView = window.innerWidth < 1024;
+
+    if (isMobileView) {
+      // Toggle behavior on mobile: clicking same sector closes it
+      setActiveSector(activeSector?.id === sector.id ? null : sector);
+    } else {
+      // Desktop: just show the card
+      setActiveSector(sector);
+    }
+  };
+
+  const handleSectorHover = (sector) => {
+    // Only handle hover on desktop
+    if (window.innerWidth >= 1024) {
+      setActiveSector(sector);
+    }
+  };
+
+  const handleSectorLeave = () => {
+    // Only handle mouse leave on desktop
+    if (window.innerWidth >= 1024) {
+      setActiveSector(null);
+    }
+  };
 
   const scrollToSection = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -53,11 +102,12 @@ export default function LogoHero() {
             {sectors.map((sector) => (
               <button
                 key={sector.id}
-                onMouseEnter={() => setActiveSector(sector)}
-                onMouseLeave={() => setActiveSector(null)}
-                onClick={() => setActiveSector(sector)}
+                data-sector-button
+                onMouseEnter={() => handleSectorHover(sector)}
+                onMouseLeave={handleSectorLeave}
+                onClick={() => handleSectorClick(sector)}
                 aria-label={`Learn about ${sector.name}`}
-                className="absolute -translate-x-1/2 -translate-y-1/2 
+                className="absolute -translate-x-1/2 -translate-y-1/2
                          transition-all duration-300 cursor-pointer group
                          focus:outline-none z-20"
                 style={{
@@ -89,10 +139,11 @@ export default function LogoHero() {
           </div>
         </div>
 
-        {/* Hover Instruction - BELOW LOGO (replaces title) */}
+        {/* Interaction Instruction - BELOW LOGO (replaces title) */}
         <div className="text-center space-y-3 -mt-12">
           <p className="text-kt-gold-light/90 text-base md:text-lg font-medium">
-            Hover over an icon to discover each sector
+            <span className="lg:inline hidden">Hover over an icon to discover each sector</span>
+            <span className="lg:hidden">Tap an icon to discover each sector</span>
           </p>
           <p className="text-kt-grey text-sm md:text-base max-w-2xl leading-relaxed">
             Turning complex, under-served problems into quietly powerful prototypes.
@@ -100,7 +151,7 @@ export default function LogoHero() {
         </div>
 
         {/* MOBILE: Show sector card below instruction */}
-        <div className="lg:hidden w-full max-w-xl">
+        <div ref={sectorCardRef} className="lg:hidden w-full max-w-xl px-4">
           {activeSector && (
             <SectorCard sector={activeSector} position="center" />
           )}

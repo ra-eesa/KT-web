@@ -12,15 +12,19 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
       await expect(logo).toHaveAttribute('src', '/logo-main.svg');
     });
 
-    test('should display the hero section with correct layout', async ({ page }) => {
+    test('should display the hero section with correct layout', async ({ page, viewport }) => {
       const heroSection = page.locator('section').first();
       await expect(heroSection).toBeVisible();
 
       // Check for early-stage badge
       await expect(page.getByText(/early-stage deep tech studio/i)).toBeVisible();
 
-      // Check for hover instruction
-      await expect(page.getByText(/hover over an icon to discover each sector/i)).toBeVisible();
+      // Check for instruction text (desktop shows "hover", mobile shows "tap")
+      if (viewport.width < 1024) {
+        await expect(page.getByText(/tap an icon to discover each sector/i)).toBeVisible();
+      } else {
+        await expect(page.getByText(/hover over an icon to discover each sector/i)).toBeVisible();
+      }
 
       // Check for tagline
       await expect(page.getByText(/turning complex, under-served problems/i)).toBeVisible();
@@ -445,6 +449,101 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
 
       // Badge should have reasonable spacing from header (at least 20px)
       expect(headerToBadgeGap).toBeGreaterThanOrEqual(20);
+    });
+
+    test('should show sector card when tapping icon on mobile', async ({ page, viewport }) => {
+      test.skip(viewport.width >= 1024, 'Mobile-only test');
+
+      // Wait for page to be fully loaded
+      await page.waitForLoadState('networkidle');
+
+      // Find a sector icon button (Heritage sector)
+      const heritageButton = page.locator('[data-sector-button]').first();
+      await expect(heritageButton).toBeVisible();
+
+      // Mobile card container should exist but be empty initially
+      const mobileCardContainer = page.locator('.lg\\:hidden.w-full.max-w-xl.px-4');
+
+      // Initially no card content
+      const initialCount = await mobileCardContainer.locator('h3').count();
+      expect(initialCount).toBe(0);
+
+      // Tap the icon
+      await heritageButton.click();
+
+      // Card should appear with Heritage title (look for the h3 heading specifically)
+      const sectorCardHeading = mobileCardContainer.locator('h3').filter({ hasText: 'Heritage' });
+      await expect(sectorCardHeading).toBeVisible({ timeout: 2000 });
+    });
+
+    test('should toggle sector card on mobile when tapping same icon twice', async ({ page, viewport }) => {
+      test.skip(viewport.width >= 1024, 'Mobile-only test');
+
+      const heritageButton = page.locator('[data-sector-button]').first();
+      const mobileCardContainer = page.locator('.lg\\:hidden.w-full.max-w-xl.px-4');
+
+      // First tap - card appears
+      await heritageButton.click();
+      const sectorCardHeading = mobileCardContainer.locator('h3').filter({ hasText: 'Heritage' });
+      await expect(sectorCardHeading).toBeVisible();
+
+      // Second tap - card disappears
+      await heritageButton.click();
+      const headingCount = await mobileCardContainer.locator('h3').count();
+      expect(headingCount).toBe(0);
+    });
+
+    test('should switch cards when tapping different sector icons on mobile', async ({ page, viewport }) => {
+      test.skip(viewport.width >= 1024, 'Mobile-only test');
+
+      const heritageButton = page.locator('[data-sector-button]').first();
+      const agricultureButton = page.locator('[data-sector-button]').nth(1);
+      const mobileCardContainer = page.locator('.lg\\:hidden.w-full.max-w-xl.px-4');
+
+      // Tap first icon
+      await heritageButton.click();
+      await expect(mobileCardContainer.locator('h3').filter({ hasText: 'Heritage' })).toBeVisible();
+
+      // Tap second icon
+      await agricultureButton.click();
+
+      // First card should be gone, second should appear
+      await expect(mobileCardContainer.locator('h3').filter({ hasText: 'Heritage' })).not.toBeVisible();
+      await expect(mobileCardContainer.locator('h3').filter({ hasText: 'Agriculture' })).toBeVisible();
+    });
+
+    test('should close card when tapping outside on mobile', async ({ page, viewport }) => {
+      test.skip(viewport.width >= 1024, 'Mobile-only test');
+
+      const heritageButton = page.locator('[data-sector-button]').first();
+      const mobileCardContainer = page.locator('.lg\\:hidden.w-full.max-w-xl.px-4');
+
+      // Tap icon to show card
+      await heritageButton.click();
+      const sectorCardHeading = mobileCardContainer.locator('h3').filter({ hasText: 'Heritage' });
+      await expect(sectorCardHeading).toBeVisible();
+
+      // Tap outside the card and button (on the background section, forcing through any overlays)
+      await page.locator('section').first().click({ position: { x: 10, y: 10 }, force: true });
+
+      // Wait a moment for the click handler to process
+      await page.waitForTimeout(300);
+
+      // Card should disappear
+      const headingCount = await mobileCardContainer.locator('h3').count();
+      expect(headingCount).toBe(0);
+    });
+
+    test('should show correct instruction text on mobile', async ({ page, viewport }) => {
+      test.skip(viewport.width >= 1024, 'Mobile-only test');
+
+      // Mobile should show "Tap" instruction
+      const tapInstruction = page.locator('text=Tap an icon to discover each sector');
+      await expect(tapInstruction).toBeVisible();
+
+      // Should not show hover instruction
+      const hoverInstruction = page.locator('text=Hover over an icon to discover each sector');
+      await expect(hoverInstruction).not.toBeVisible();
     });
 
   });
