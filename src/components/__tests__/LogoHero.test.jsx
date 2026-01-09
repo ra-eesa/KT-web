@@ -127,10 +127,10 @@ describe('LogoHero - Landing Page Load Tests', () => {
       const spaceIcon = screen.getByAltText('Space & Frontier Systems');
       const heritageIcon = screen.getByAltText('Heritage & Architecture');
 
-      // Space icon should have larger dimensions (w-10 h-10 md:w-20 md:h-20)
-      // vs other icons (w-8 h-8 md:w-16 md:h-16)
-      expect(spaceIcon.className).toContain('w-10');
-      expect(heritageIcon.className).toContain('w-8');
+      // Space icon should have larger dimensions (w-8 h-8 md:w-20 md:h-20)
+      // vs other icons (w-6 h-6 md:w-16 md:h-16)
+      expect(spaceIcon.className).toContain('w-8');
+      expect(heritageIcon.className).toContain('w-6');
     });
   });
 

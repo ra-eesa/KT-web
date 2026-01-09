@@ -84,7 +84,7 @@ export default function LogoHero() {
       </div>
 
       {/* CENTERED CONTENT WITH SIDE CARDS */}
-      <div className="relative z-10 flex flex-col items-center space-y-12 max-w-7xl w-full mt-32 md:mt-0">
+      <div className="relative z-10 flex flex-col items-center space-y-12 max-w-7xl w-full mt-48 md:mt-0">
         
         {/* LOGO + SIDE CARDS CONTAINER */}
         <div className="relative w-full flex items-center justify-center">
@@ -136,7 +136,7 @@ export default function LogoHero() {
                   className={`object-contain transition-all duration-300
                            group-hover:scale-125 group-hover:drop-shadow-[0_0_12px_rgba(245,214,137,0.8)]
                            group-focus:scale-125 group-focus:drop-shadow-[0_0_12px_rgba(245,214,137,0.8)]
-                           ${sector.id === 'space' ? 'w-10 h-10 md:w-20 md:h-20' : 'w-8 h-8 md:w-16 md:h-16'}`}
+                           ${sector.id === 'space' ? 'w-8 h-8 md:w-20 md:h-20' : 'w-6 h-6 md:w-16 md:h-16'}`}
                 />
                 
                 {/* Subtle glow ring on hover */}

@@ -445,8 +445,9 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
       // Calculate the distance from header to badge
       const headerToBadgeGap = badgeBox.y - (headerBox.y + headerBox.height);
 
-      // Should have proper clearance - badge should be well above the logo (no overlap)
-      expect(badgeToLogoGap).toBeGreaterThanOrEqual(0);
+      // Should have significant clearance - badge should be well above the logo
+      // With mt-48 (192px), we expect at least 100px of clearance
+      expect(badgeToLogoGap).toBeGreaterThanOrEqual(100);
 
       // Badge should have reasonable spacing from header (at least 20px)
       expect(headerToBadgeGap).toBeGreaterThanOrEqual(20);
