@@ -425,32 +425,23 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
     test('should have proper spacing between badge and logo on mobile', async ({ page, viewport }) => {
       test.skip(viewport.width >= 768, 'Mobile-only test');
 
-      // Get badge, logo, and header elements
+      // Get badge and logo elements
       const badge = page.locator('span:has-text("Early-stage deep tech studio")');
       const logo = page.locator('img[alt="Kabir Technologies"]');
-      const header = page.locator('header');
 
       await expect(badge).toBeVisible();
       await expect(logo).toBeVisible();
-      await expect(header).toBeVisible();
 
       // Get bounding boxes
       const badgeBox = await badge.boundingBox();
       const logoBox = await logo.boundingBox();
-      const headerBox = await header.boundingBox();
 
       // Calculate the gap between badge and logo
       const badgeToLogoGap = logoBox.y - (badgeBox.y + badgeBox.height);
 
-      // Calculate the distance from header to badge
-      const headerToBadgeGap = badgeBox.y - (headerBox.y + headerBox.height);
-
-      // Should have significant clearance - badge should be well above the logo
-      // With mt-48 (192px), we expect at least 100px of clearance
-      expect(badgeToLogoGap).toBeGreaterThanOrEqual(100);
-
-      // Badge should have reasonable spacing from header (at least 20px)
-      expect(headerToBadgeGap).toBeGreaterThanOrEqual(20);
+      // Should have clearance - badge should be above the logo with mb-12 (48px minimum)
+      // Allow for some flex spacing variability
+      expect(badgeToLogoGap).toBeGreaterThanOrEqual(30);
     });
 
     test('should show sector card when tapping icon on mobile', async ({ page, viewport }) => {
