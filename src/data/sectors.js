@@ -9,7 +9,7 @@ export const sectors = [
     idealPartner:
       "Heritage architects, conservation bodies, local authorities, museums, UNESCO sites, and specialist surveying firms.",
     hotspot: {
-      mobile: { left: "20%", top: "72%" },
+      mobile: { left: "23%", top: "75%" },
       desktop: { left: "23%", top: "74%" }
     },
     cardPosition: "left",
@@ -24,7 +24,7 @@ export const sectors = [
     idealPartner:
       "Regulators, water authorities, agricultural cooperatives, sustainability consultants, and climate adaptation agencies.",
     hotspot: {
-      mobile: { left: "80%", top: "78%" },
+      mobile: { left: "78.5%", top: "82%" },
       desktop: { left: "78%", top: "80.5%" }
     },
     cardPosition: "right",
@@ -39,7 +39,7 @@ export const sectors = [
     idealPartner:
       "Clinicians, diagnostic labs, research hospitals, public health agencies, and medical device innovators exploring AI integration.",
     hotspot: {
-      mobile: { left: "50%", top: "77%" },
+      mobile: { left: "50%", top: "80%" },
       desktop: { left: "50%", top: "79.5%" }
     },
     cardPosition: "left",
@@ -54,7 +54,7 @@ export const sectors = [
     idealPartner:
       "Ecologists, conservation NGOs, national parks, environmental agencies, climate researchers, and wildlife management organizations.",
     hotspot: {
-      mobile: { left: "72%", top: "58%" },
+      mobile: { left: "69%", top: "61%" },
       desktop: { left: "69.3%", top: "60.5%" }
     },
     cardPosition: "right",
@@ -69,7 +69,7 @@ export const sectors = [
     idealPartner:
       "Space agencies, logistics researchers, defense planners, frontier operations teams, and organizations exploring high-risk supply chains.",
     hotspot: {
-      mobile: { left: "50%", top: "30%" },
+      mobile: { left: "50%", top: "33%" },
       desktop: { left: "50%", top: "33%" }
     },
     cardPosition: "left",

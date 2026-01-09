@@ -136,7 +136,7 @@ export default function LogoHero() {
                   className={`object-contain transition-all duration-300
                            group-hover:scale-125 group-hover:drop-shadow-[0_0_12px_rgba(245,214,137,0.8)]
                            group-focus:scale-125 group-focus:drop-shadow-[0_0_12px_rgba(245,214,137,0.8)]
-                           ${sector.id === 'space' ? 'w-16 h-16 md:w-20 md:h-20' : 'w-12 h-12 md:w-16 md:h-16'}`}
+                           ${sector.id === 'space' ? 'w-10 h-10 md:w-20 md:h-20' : 'w-8 h-8 md:w-16 md:h-16'}`}
                 />
                 
                 {/* Subtle glow ring on hover */}
