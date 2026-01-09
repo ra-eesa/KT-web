@@ -4,7 +4,19 @@ import SectorCard from './SectorCard';
 
 export default function LogoHero() {
   const [activeSector, setActiveSector] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
   const sectorCardRef = useRef(null);
+
+  // Detect screen size for responsive icon positioning
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   // Handle click outside to close card on mobile
   useEffect(() => {
@@ -99,22 +111,24 @@ export default function LogoHero() {
             />
 
             {/* Interactive Sector Icon Overlays */}
-            {sectors.map((sector) => (
-              <button
-                key={sector.id}
-                data-sector-button
-                onMouseEnter={() => handleSectorHover(sector)}
-                onMouseLeave={handleSectorLeave}
-                onClick={() => handleSectorClick(sector)}
-                aria-label={`Learn about ${sector.name}`}
-                className="absolute -translate-x-1/2 -translate-y-1/2
-                         transition-all duration-300 cursor-pointer group
-                         focus:outline-none z-20"
-                style={{
-                  left: sector.hotspot.left,
-                  top: sector.hotspot.top,
-                }}
-              >
+            {sectors.map((sector) => {
+              const hotspot = isMobile ? sector.hotspot.mobile : sector.hotspot.desktop;
+              return (
+                <button
+                  key={sector.id}
+                  data-sector-button
+                  onMouseEnter={() => handleSectorHover(sector)}
+                  onMouseLeave={handleSectorLeave}
+                  onClick={() => handleSectorClick(sector)}
+                  aria-label={`Learn about ${sector.name}`}
+                  className="absolute -translate-x-1/2 -translate-y-1/2
+                           transition-all duration-300 cursor-pointer group
+                           focus:outline-none z-20"
+                  style={{
+                    left: hotspot.left,
+                    top: hotspot.top,
+                  }}
+                >
                 {/* Sector Icon */}
                 <img
                   src={sector.icon}
@@ -128,7 +142,8 @@ export default function LogoHero() {
                 {/* Subtle glow ring on hover */}
                 <span className="absolute inset-0 rounded-full bg-kt-gold/0 group-hover:bg-kt-gold/10 transition-all duration-300 -z-10 scale-150"></span>
               </button>
-            ))}
+              );
+            })}
           </div>
 
           {/* RIGHT SECTOR CARD */}

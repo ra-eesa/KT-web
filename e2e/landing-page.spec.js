@@ -386,6 +386,7 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
   test.describe('Visual regression - Screenshots', () => {
     test('should match hero section screenshot', async ({ page }) => {
       // Skip in CI - visual regression works better locally where snapshots are generated
+      // eslint-disable-next-line no-undef
       test.skip(!!process.env.CI, 'Screenshot tests run locally only');
 
       // This test creates baseline screenshots on first run
