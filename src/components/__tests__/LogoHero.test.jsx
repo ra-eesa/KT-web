@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import LogoHero from '../LogoHero';
+import { sectors } from '../../data/sectors';
 
 // Use real timers for these tests since they involve animations
 beforeEach(() => {
@@ -54,7 +55,7 @@ describe('LogoHero - Landing Page Load Tests', () => {
     });
   });
 
-  describe('All 5 sector icons appear in correct positions', () => {
+  describe('All 5 sector icons appear in correct positions (from sectors.js)', () => {
     it('should render exactly 5 sector icons', () => {
       render(<LogoHero />);
 
@@ -66,59 +67,80 @@ describe('LogoHero - Landing Page Load Tests', () => {
       expect(sectorButtons).toHaveLength(5);
     });
 
-    it('should render Heritage sector icon with correct position', () => {
+    it('should render Heritage sector icon with desktop position from sectors.js', () => {
       render(<LogoHero />);
 
+      const heritageSector = sectors.find(s => s.id === 'heritage');
       const heritageButton = screen.getByRole('button', { name: /learn about heritage/i });
       expect(heritageButton).toBeInTheDocument();
-      expect(heritageButton).toHaveStyle({ left: '23%', top: '74%' });
+      // Verify desktop position matches sectors.js data
+      expect(heritageButton).toHaveStyle({
+        left: heritageSector.hotspot.desktop.left,
+        top: heritageSector.hotspot.desktop.top
+      });
 
       const heritageIcon = screen.getByAltText('Heritage & Architecture');
-      expect(heritageIcon).toHaveAttribute('src', '/icon-heritage.svg');
+      expect(heritageIcon).toHaveAttribute('src', heritageSector.icon);
     });
 
-    it('should render Agriculture sector icon with correct position', () => {
+    it('should render Agriculture sector icon with desktop position from sectors.js', () => {
       render(<LogoHero />);
 
-      const agricultureButton = screen.getByRole('button', { name: /learn about agriculture/i });
-      expect(agricultureButton).toBeInTheDocument();
-      expect(agricultureButton).toHaveStyle({ left: '78%', top: '80.5%' });
+      const agriSector = sectors.find(s => s.id === 'agriculture');
+      const agriButton = screen.getByRole('button', { name: /learn about agriculture/i });
+      expect(agriButton).toBeInTheDocument();
+      expect(agriButton).toHaveStyle({
+        left: agriSector.hotspot.desktop.left,
+        top: agriSector.hotspot.desktop.top
+      });
 
-      const agricultureIcon = screen.getByAltText('Agriculture & Water Systems');
-      expect(agricultureIcon).toHaveAttribute('src', '/icon-agriculture.svg');
+      const agriIcon = screen.getByAltText('Agriculture & Water Systems');
+      expect(agriIcon).toHaveAttribute('src', agriSector.icon);
     });
 
-    it('should render Healthcare sector icon with correct position', () => {
+    it('should render Healthcare sector icon with desktop position from sectors.js', () => {
       render(<LogoHero />);
 
-      const healthcareButton = screen.getByRole('button', { name: /learn about healthcare/i });
-      expect(healthcareButton).toBeInTheDocument();
-      expect(healthcareButton).toHaveStyle({ left: '50%', top: '79.5%' });
+      const healthSector = sectors.find(s => s.id === 'healthcare');
+      const healthButton = screen.getByRole('button', { name: /learn about healthcare/i });
+      expect(healthButton).toBeInTheDocument();
+      expect(healthButton).toHaveStyle({
+        left: healthSector.hotspot.desktop.left,
+        top: healthSector.hotspot.desktop.top
+      });
 
-      const healthcareIcon = screen.getByAltText('Healthcare & Diagnostics');
-      expect(healthcareIcon).toHaveAttribute('src', '/icon-healthcare.svg');
+      const healthIcon = screen.getByAltText('Healthcare & Diagnostics');
+      expect(healthIcon).toHaveAttribute('src', healthSector.icon);
     });
 
-    it('should render Biodiversity sector icon with correct position', () => {
+    it('should render Biodiversity sector icon with desktop position from sectors.js', () => {
       render(<LogoHero />);
 
-      const biodiversityButton = screen.getByRole('button', { name: /learn about biodiversity/i });
-      expect(biodiversityButton).toBeInTheDocument();
-      expect(biodiversityButton).toHaveStyle({ left: '69.3%', top: '60.5%' });
+      const bioSector = sectors.find(s => s.id === 'biodiversity');
+      const bioButton = screen.getByRole('button', { name: /learn about biodiversity/i });
+      expect(bioButton).toBeInTheDocument();
+      expect(bioButton).toHaveStyle({
+        left: bioSector.hotspot.desktop.left,
+        top: bioSector.hotspot.desktop.top
+      });
 
-      const biodiversityIcon = screen.getByAltText('Biodiversity & Climate');
-      expect(biodiversityIcon).toHaveAttribute('src', '/icon-biodiversity.svg');
+      const bioIcon = screen.getByAltText('Biodiversity & Climate');
+      expect(bioIcon).toHaveAttribute('src', bioSector.icon);
     });
 
-    it('should render Space sector icon with correct position', () => {
+    it('should render Space sector icon with desktop position from sectors.js', () => {
       render(<LogoHero />);
 
+      const spaceSector = sectors.find(s => s.id === 'space');
       const spaceButton = screen.getByRole('button', { name: /learn about space/i });
       expect(spaceButton).toBeInTheDocument();
-      expect(spaceButton).toHaveStyle({ left: '50%', top: '33%' });
+      expect(spaceButton).toHaveStyle({
+        left: spaceSector.hotspot.desktop.left,
+        top: spaceSector.hotspot.desktop.top
+      });
 
       const spaceIcon = screen.getByAltText('Space & Frontier Systems');
-      expect(spaceIcon).toHaveAttribute('src', '/icon-space.svg');
+      expect(spaceIcon).toHaveAttribute('src', spaceSector.icon);
     });
 
     it('should have space icon larger than other icons', () => {
@@ -127,10 +149,58 @@ describe('LogoHero - Landing Page Load Tests', () => {
       const spaceIcon = screen.getByAltText('Space & Frontier Systems');
       const heritageIcon = screen.getByAltText('Heritage & Architecture');
 
-      // Space icon should have larger dimensions (w-8 h-8 md:w-20 md:h-20)
-      // vs other icons (w-6 h-6 md:w-16 md:h-16)
-      expect(spaceIcon.className).toContain('w-8');
+      // Space icon should have larger dimensions (w-6 h-6 md:w-20 md:h-20)
+      // vs other icons (w-5 h-5 md:w-16 md:h-16)
+      expect(spaceIcon.className).toContain('w-7');
       expect(heritageIcon.className).toContain('w-6');
+    });
+
+    // EXPLICIT DESKTOP POSITION REFERENCE TESTS - Ensure triangle proportions are maintained
+    describe('Explicit desktop position references (to prevent accidental position drift)', () => {
+      it('should have Heritage icon at exactly 23% left, 74% top on desktop', () => {
+        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1280 });
+        render(<LogoHero />);
+        window.dispatchEvent(new Event('resize'));
+
+        const heritageButton = screen.getByRole('button', { name: /learn about heritage/i });
+        expect(heritageButton).toHaveStyle({ left: '23%', top: '74%' });
+      });
+
+      it('should have Agriculture icon at exactly 78% left, 80.5% top on desktop', () => {
+        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1280 });
+        render(<LogoHero />);
+        window.dispatchEvent(new Event('resize'));
+
+        const agriButton = screen.getByRole('button', { name: /learn about agriculture/i });
+        expect(agriButton).toHaveStyle({ left: '78%', top: '80.5%' });
+      });
+
+      it('should have Healthcare icon at exactly 50% left, 79.5% top on desktop', () => {
+        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1280 });
+        render(<LogoHero />);
+        window.dispatchEvent(new Event('resize'));
+
+        const healthButton = screen.getByRole('button', { name: /learn about healthcare/i });
+        expect(healthButton).toHaveStyle({ left: '50%', top: '79.5%' });
+      });
+
+      it('should have Biodiversity icon at exactly 69.3% left, 60.5% top on desktop', () => {
+        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1280 });
+        render(<LogoHero />);
+        window.dispatchEvent(new Event('resize'));
+
+        const bioButton = screen.getByRole('button', { name: /learn about biodiversity/i });
+        expect(bioButton).toHaveStyle({ left: '69.3%', top: '60.5%' });
+      });
+
+      it('should have Space icon at exactly 50% left, 33% top on desktop', () => {
+        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1280 });
+        render(<LogoHero />);
+        window.dispatchEvent(new Event('resize'));
+
+        const spaceButton = screen.getByRole('button', { name: /learn about space/i });
+        expect(spaceButton).toHaveStyle({ left: '50%', top: '33%' });
+      });
     });
   });
 
@@ -271,12 +341,11 @@ describe('LogoHero - Landing Page Load Tests', () => {
       window.dispatchEvent(new Event('resize'));
 
       // Logo container should have responsive max-width class
-      // Use attribute selector to avoid escaping issues
       const logoContainer = container.querySelector('[class*="max-w-"]');
       expect(logoContainer).toBeInTheDocument();
     });
 
-    it('should use mobile hotspot positions for sector icons', () => {
+    it('should use mobile hotspot positions from sectors.js on mobile viewport', () => {
       // Mock mobile viewport
       Object.defineProperty(window, 'innerWidth', {
         writable: true,
@@ -287,9 +356,63 @@ describe('LogoHero - Landing Page Load Tests', () => {
       render(<LogoHero />);
       window.dispatchEvent(new Event('resize'));
 
-      // Heritage should use mobile position (20% left, 70% top vs 23%, 74% desktop)
-      const heritageButton = screen.getByRole('button', { name: /learn about heritage/i });
-      expect(heritageButton).toHaveStyle({ left: '20%', top: '70%' });
+      // Verify ALL sectors use their mobile positions from sectors.js
+      sectors.forEach(sector => {
+        const button = screen.getByRole('button', { name: new RegExp(`learn about ${sector.id}`, 'i') });
+        expect(button).toHaveStyle({
+          left: sector.hotspot.mobile.left,
+          top: sector.hotspot.mobile.top
+        });
+      });
+    });
+
+    // EXPLICIT POSITION REFERENCE TESTS - These ensure positions don't accidentally change
+    // If you intentionally want to change icon positions, update both sectors.js AND these test values
+    describe('Explicit mobile position references (to prevent accidental position drift)', () => {
+      it('should have Heritage icon at exactly 25% left, 74% top on mobile', () => {
+        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 375 });
+        render(<LogoHero />);
+        window.dispatchEvent(new Event('resize'));
+
+        const heritageButton = screen.getByRole('button', { name: /learn about heritage/i });
+        expect(heritageButton).toHaveStyle({ left: '25%', top: '74%' });
+      });
+
+      it('should have Agriculture icon at exactly 81.5% left, 80.5% top on mobile', () => {
+        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 375 });
+        render(<LogoHero />);
+        window.dispatchEvent(new Event('resize'));
+
+        const agriButton = screen.getByRole('button', { name: /learn about agriculture/i });
+        expect(agriButton).toHaveStyle({ left: '81.5%', top: '80.5%' });
+      });
+
+      it('should have Healthcare icon at exactly 54% left, 79.5% top on mobile', () => {
+        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 375 });
+        render(<LogoHero />);
+        window.dispatchEvent(new Event('resize'));
+
+        const healthButton = screen.getByRole('button', { name: /learn about healthcare/i });
+        expect(healthButton).toHaveStyle({ left: '54%', top: '79.5%' });
+      });
+
+      it('should have Biodiversity icon at exactly 73.5% left, 60.5% top on mobile', () => {
+        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 375 });
+        render(<LogoHero />);
+        window.dispatchEvent(new Event('resize'));
+
+        const bioButton = screen.getByRole('button', { name: /learn about biodiversity/i });
+        expect(bioButton).toHaveStyle({ left: '73.5%', top: '60.5%' });
+      });
+
+      it('should have Space icon at exactly 51.5% left, 33% top on mobile', () => {
+        Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 375 });
+        render(<LogoHero />);
+        window.dispatchEvent(new Event('resize'));
+
+        const spaceButton = screen.getByRole('button', { name: /learn about space/i });
+        expect(spaceButton).toHaveStyle({ left: '51.5%', top: '33%' });
+      });
     });
 
     it('should use smaller icon sizes on mobile', () => {
@@ -305,9 +428,9 @@ describe('LogoHero - Landing Page Load Tests', () => {
       const spaceIcon = screen.getByAltText('Space & Frontier Systems');
       const heritageIcon = screen.getByAltText('Heritage & Architecture');
 
-      // Mobile: Space w-7 h-7, others w-5 h-5
+      // Mobile: Space w-7 h-7, others w-6 h-6
       expect(spaceIcon.className).toContain('w-7');
-      expect(heritageIcon.className).toContain('w-5');
+      expect(heritageIcon.className).toContain('w-6');
     });
 
     it('should have proper spacing between badge and logo on mobile', () => {
@@ -359,10 +482,8 @@ describe('LogoHero - Landing Page Load Tests', () => {
         button.getAttribute('aria-label')?.includes('Learn about')
       );
 
-      // All buttons should have min-width and min-height for touch targets
+      // All buttons should have data-sector-button attribute (CSS applies min-width/height)
       sectorButtons.forEach(button => {
-        const style = window.getComputedStyle(button);
-        // Check data-sector-button attribute exists (CSS applies min-width/height)
         expect(button).toHaveAttribute('data-sector-button');
       });
     });
