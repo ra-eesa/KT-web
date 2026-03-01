@@ -287,9 +287,9 @@ describe('LogoHero - Landing Page Load Tests', () => {
       render(<LogoHero />);
       window.dispatchEvent(new Event('resize'));
 
-      // Heritage should use mobile position (72% vs 74% desktop)
+      // Heritage should use mobile position (20% left, 70% top vs 23%, 74% desktop)
       const heritageButton = screen.getByRole('button', { name: /learn about heritage/i });
-      expect(heritageButton).toHaveStyle({ left: '23%', top: '72%' });
+      expect(heritageButton).toHaveStyle({ left: '20%', top: '70%' });
     });
 
     it('should use smaller icon sizes on mobile', () => {
