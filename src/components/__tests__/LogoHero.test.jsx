@@ -534,7 +534,7 @@ describe('LogoHero - Landing Page Load Tests', () => {
         value: 375
       });
       
-      const { getByLabelText, container } = render(<LogoHero />);
+      const { getByLabelText } = render(<LogoHero />);
       window.dispatchEvent(new Event('resize'));
       
       const button = getByLabelText(/Learn about Heritage/);
