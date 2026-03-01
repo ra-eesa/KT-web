@@ -123,7 +123,7 @@ export default function LogoHero() {
                   aria-label={`Learn about ${sector.name}`}
                   className="absolute -translate-x-1/2 -translate-y-1/2
                            transition-all duration-300 cursor-pointer group
-                           flex items-center justify-center focus:outline-none z-20"
+                           focus:outline-none z-20"
                   style={{
                     left: hotspot.left,
                     top: hotspot.top,
@@ -141,7 +141,7 @@ export default function LogoHero() {
                 />
                 
                 {/* Subtle glow ring on hover or active */}
-                <span className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-300 -z-10 scale-150
+                <span className={`absolute left-0 top-1/2 -translate-y-1/2 rounded-full transition-all duration-300 -z-10 scale-150
                                ${activeSector?.id === sector.id ? 'bg-kt-gold/10' : 'bg-kt-gold/0 group-hover:bg-kt-gold/10 group-focus:bg-kt-gold/10'}
                                ${sector.id === 'space' ? 'w-7 h-7 sm:w-8 sm:h-8 md:w-16 md:h-16 lg:w-20 lg:h-20' : 'w-6 h-6 sm:w-7 sm:h-7 md:w-14 md:h-14 lg:w-16 lg:h-16'}`}></span>
               </button>
