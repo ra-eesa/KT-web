@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import LogoHero from '../LogoHero';
 import { sectors } from '../../data/sectors';
 
@@ -378,13 +378,13 @@ describe('LogoHero - Landing Page Load Tests', () => {
         expect(heritageButton).toHaveStyle({ left: '25%', top: '74%' });
       });
 
-      it('should have Agriculture icon at exactly 81.5% left, 80.5% top on mobile', () => {
+      it('should have Agriculture icon at exactly 82% left, 81% top on mobile', () => {
         Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 375 });
         render(<LogoHero />);
         window.dispatchEvent(new Event('resize'));
 
         const agriButton = screen.getByRole('button', { name: /learn about agriculture/i });
-        expect(agriButton).toHaveStyle({ left: '81.5%', top: '80.5%' });
+        expect(agriButton).toHaveStyle({ left: '82%', top: '81%' });
       });
 
       it('should have Healthcare icon at exactly 54% left, 79.5% top on mobile', () => {
@@ -525,6 +525,33 @@ describe('LogoHero - Landing Page Load Tests', () => {
       // Mobile card container should have lg:hidden class
       const mobileCardContainer = container.querySelector('.lg\\:hidden');
       expect(mobileCardContainer).toBeInTheDocument();
+    });
+
+    it('should perfectly align active glow circles with responsive icons on mobile', () => {
+      Object.defineProperty(window, 'innerWidth', {
+        writable: true,
+        configurable: true,
+        value: 375
+      });
+      
+      const { getByLabelText } = render(<LogoHero />);
+      window.dispatchEvent(new Event('resize'));
+      
+      const button = getByLabelText(/Learn about Heritage/);
+      fireEvent.click(button);
+      
+      const glowSpan = button.querySelector('span');
+      expect(glowSpan).toBeInTheDocument();
+      
+      // Check alignment classes ensuring exact pinning to vertical center
+      expect(glowSpan.className).toContain('absolute');
+      expect(glowSpan.className).toContain('left-0');
+      expect(glowSpan.className).toContain('top-1/2');
+      expect(glowSpan.className).toContain('-translate-y-1/2');
+      
+      // Check size matches icon sizes exactly
+      expect(glowSpan.className).toContain('w-6');
+      expect(glowSpan.className).toContain('h-6');
     });
   });
 });

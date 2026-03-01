@@ -24,7 +24,7 @@ export const sectors = [
     idealPartner:
       "Regulators, water authorities, agricultural cooperatives, sustainability consultants, and climate adaptation agencies.",
     hotspot: {
-      mobile: { left: "81.5%", top: "80.5%" },
+      mobile: { left: "82%", top: "81%" },
       desktop: { left: "78%", top: "80.5%" }
     },
     cardPosition: "right",
