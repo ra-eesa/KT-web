@@ -30,3 +30,27 @@ html {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Mobile viewport handling for iPhone */
+@supports (-webkit-touch-callout: none) {
+  /* iOS specific fixes */
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Ensure icons scale properly on smaller screens */
+@media (max-width: 375px) {
+  /* iPhone SE and similar small screens */
+  .hero-logo-container {
+    max-width: 240px !important;
+  }
+}
+
+/* Better touch targets for mobile */
+@media (max-width: 768px) {
+  [data-sector-button] {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}

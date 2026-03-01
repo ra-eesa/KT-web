@@ -77,14 +77,14 @@ export default function LogoHero() {
       <div className="absolute inset-0 bg-gradient-to-br from-kt-black-lighter/20 via-transparent to-kt-black-lighter/10 pointer-events-none"></div>
 
       {/* Early-stage badge - LEFT SIDE */}
-      <div className="relative w-full max-w-7xl mt-8 mb-12 md:mt-16 md:mb-0 z-10">
+      <div className="relative w-full max-w-7xl mt-12 mb-6 md:mt-16 md:mb-0 z-10">
         <span className="inline-block text-[10px] font-semibold uppercase tracking-[0.2em] text-kt-gold-light bg-kt-forest/20 border border-kt-gold/30 px-5 py-2.5 rounded-full">
           Early-stage deep tech studio
         </span>
       </div>
 
       {/* CENTERED CONTENT WITH SIDE CARDS */}
-      <div className="relative z-10 flex flex-col items-center space-y-12 max-w-7xl w-full flex-1 justify-center md:pt-0">
+      <div className="relative z-10 flex flex-col items-center space-y-8 md:space-y-12 max-w-7xl w-full flex-1 justify-center pt-4 md:pt-0">
         
         {/* LOGO + SIDE CARDS CONTAINER */}
         <div className="relative w-full flex items-center justify-center">
@@ -96,8 +96,8 @@ export default function LogoHero() {
             )}
           </div>
 
-          {/* MAIN LOGO - BIGGER */}
-          <div className="relative w-full max-w-xl md:max-w-2xl aspect-square flex items-center justify-center">
+          {/* MAIN LOGO - Responsive sizing for mobile */}
+          <div className="relative w-full max-w-[280px] sm:max-w-sm md:max-w-xl lg:max-w-2xl aspect-square flex items-center justify-center">
             
             {/* Glow effects behind logo */}
             <div className="absolute inset-0 bg-gradient-radial from-kt-gold/5 via-kt-gold/2 to-transparent rounded-full blur-3xl animate-pulse-slow"></div>
@@ -136,7 +136,7 @@ export default function LogoHero() {
                   className={`object-contain transition-all duration-300
                            group-hover:scale-125 group-hover:drop-shadow-[0_0_12px_rgba(245,214,137,0.8)]
                            group-focus:scale-125 group-focus:drop-shadow-[0_0_12px_rgba(245,214,137,0.8)]
-                           ${sector.id === 'space' ? 'w-8 h-8 md:w-20 md:h-20' : 'w-6 h-6 md:w-16 md:h-16'}`}
+                           ${sector.id === 'space' ? 'w-7 h-7 sm:w-8 sm:h-8 md:w-16 md:h-16 lg:w-20 lg:h-20' : 'w-5 h-5 sm:w-6 sm:h-6 md:w-14 md:h-14 lg:w-16 lg:h-16'}`}
                 />
                 
                 {/* Subtle glow ring on hover */}
@@ -155,7 +155,7 @@ export default function LogoHero() {
         </div>
 
         {/* Interaction Instruction - BELOW LOGO (replaces title) */}
-        <div className="text-center space-y-3 -mt-12">
+        <div className="text-center space-y-3 -mt-4 md:-mt-12">
           <p className="text-kt-gold-light/90 text-base md:text-lg font-medium">
             <span className="lg:inline hidden">Hover over an icon to discover each sector</span>
             <span className="lg:hidden">Tap an icon to discover each sector</span>
