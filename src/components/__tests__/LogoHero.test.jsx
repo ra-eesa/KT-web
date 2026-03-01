@@ -378,7 +378,7 @@ describe('LogoHero - Landing Page Load Tests', () => {
         expect(heritageButton).toHaveStyle({ left: '25%', top: '74%' });
       });
 
-      it('should have Agriculture icon at exactly 81.5% left, 80.5% top on mobile', () => {
+      it('should have Agriculture icon at exactly 82% left, 81% top on mobile', () => {
         Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 375 });
         render(<LogoHero />);
         window.dispatchEvent(new Event('resize'));
