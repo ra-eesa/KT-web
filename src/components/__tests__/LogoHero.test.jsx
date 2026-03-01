@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import LogoHero from '../LogoHero';
 import { sectors } from '../../data/sectors';
 
@@ -525,6 +525,33 @@ describe('LogoHero - Landing Page Load Tests', () => {
       // Mobile card container should have lg:hidden class
       const mobileCardContainer = container.querySelector('.lg\\:hidden');
       expect(mobileCardContainer).toBeInTheDocument();
+    });
+
+    it('should perfectly align active glow circles with responsive icons on mobile', () => {
+      Object.defineProperty(window, 'innerWidth', {
+        writable: true,
+        configurable: true,
+        value: 375
+      });
+      
+      const { getByLabelText, container } = render(<LogoHero />);
+      window.dispatchEvent(new Event('resize'));
+      
+      const button = getByLabelText(/Learn about Heritage/);
+      fireEvent.click(button);
+      
+      const glowSpan = button.querySelector('span');
+      expect(glowSpan).toBeInTheDocument();
+      
+      // Check alignment classes ensuring exact pinning to vertical center
+      expect(glowSpan.className).toContain('absolute');
+      expect(glowSpan.className).toContain('left-0');
+      expect(glowSpan.className).toContain('top-1/2');
+      expect(glowSpan.className).toContain('-translate-y-1/2');
+      
+      // Check size matches icon sizes exactly
+      expect(glowSpan.className).toContain('w-6');
+      expect(glowSpan.className).toContain('h-6');
     });
   });
 });
