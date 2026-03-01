@@ -384,7 +384,7 @@ describe('LogoHero - Landing Page Load Tests', () => {
         window.dispatchEvent(new Event('resize'));
 
         const agriButton = screen.getByRole('button', { name: /learn about agriculture/i });
-        expect(agriButton).toHaveStyle({ left: '81.5%', top: '80.5%' });
+        expect(agriButton).toHaveStyle({ left: '82%', top: '81%' });
       });
 
       it('should have Healthcare icon at exactly 54% left, 79.5% top on mobile', () => {
