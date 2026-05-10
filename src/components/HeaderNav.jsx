@@ -34,7 +34,7 @@ export default function HeaderNav() {
     { id: 'philosophy', label: 'Philosophy' },
     { id: 'sectors', label: 'Sectors' },
     { id: 'lab', label: 'KT Lab' },
-    { id: 'approach', label: 'Approach' },
+    { id: 'approach', label: 'How we build' },
     { id: 'contact', label: 'Contact' },
   ];
 

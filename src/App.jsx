@@ -84,7 +84,7 @@ function App() {
               </h2>
               <p className="text-xl text-kt-gold">The Five Pillars</p>
               <p className="text-base text-kt-grey-light mt-4 max-w-3xl mx-auto">
-                These are the domains where we see opportunity for thoughtful, leverageable tools. Each represents areas we're actively exploring and where we're eager to partner with domain experts.
+                These are the domains where we see opportunity for thoughtful, leverageable tools. Areas where a precisely built prototype can have outsized impact.
               </p>
             </div>
 
@@ -146,34 +146,34 @@ function App() {
           </div>
         </section>
 
-        {/* Approach Section - Dark */}
+        {/* How we build Section - Dark */}
         <section id="approach" className="py-20 px-4 bg-kt-black-lighter relative overflow-hidden">
           <div className="max-w-5xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-gold-light mb-12 text-center">
-              Approach
+              How we build
             </h2>
 
             <div className="grid md:grid-cols-4 gap-8">
               {[
                 {
                   step: '01',
-                  title: 'Discover',
-                  desc: 'We listen, map the workflow, and surface the most leverageable pain-points.',
+                  title: 'Identify',
+                  desc: 'We spot neglected problems in complex, underserved domains where a precise tool can have outsized leverage.',
                 },
                 {
                   step: '02',
-                  title: 'Prototype',
-                  desc: 'We design and build a working prototype in a controlled environment.',
+                  title: 'Build',
+                  desc: 'We design and engineer a working prototype in a controlled environment — fast and focused.',
                 },
                 {
                   step: '03',
-                  title: 'Validate',
-                  desc: 'We run a small pilot, measure outcomes, and refine with your team.',
+                  title: 'Stress-test',
+                  desc: 'We run the prototype against real-world scenarios, measure outcomes, and refine until it holds.',
                 },
                 {
                   step: '04',
-                  title: 'Scale / Exit',
-                  desc: 'We help you integrate, or license/spin-out the tool while KT retains a share.',
+                  title: 'Release',
+                  desc: 'We license, spin out, or open the tool to the world — retaining a stake in what we\'ve built.',
                 },
               ].map((phase) => (
                 <div key={phase.step} className="text-center group">
@@ -197,13 +197,13 @@ function App() {
           <SnakeMazeBackground />
           <div className="max-w-4xl mx-auto text-center relative" style={{ zIndex: 10, position: 'relative' }}>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-gold-light mb-6">
-              Work with us
+              Get in touch
             </h2>
             <p className="text-lg text-kt-cream leading-relaxed mb-8">
-              Tell us about your sector, your problem, and what a successful prototype would look like.
+              Curious about what we're building, or want to follow our work? We're always open to a conversation.
             </p>
             <a
-              href="mailto:zeyad@kabirtechnologies.co.uk"
+              href="mailto:info@kabirtechnologies.co.uk"
               className="inline-block px-8 py-4 bg-gradient-to-r from-kt-gold-light to-kt-gold text-white font-medium rounded-xl hover:shadow-lg hover:shadow-kt-gold/30 hover:scale-105 transition-all duration-200"
             >
               Contact Us

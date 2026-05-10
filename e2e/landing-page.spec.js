@@ -214,10 +214,10 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
       expect(scrollY).toBeGreaterThan(100);
     });
 
-    test('should navigate to Approach section via header link (desktop)', async ({ page, viewport }) => {
+    test('should navigate to How we build section via header link (desktop)', async ({ page, viewport }) => {
       test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
 
-      const approachButton = page.locator('header div.hidden.md\\:flex button', { hasText: 'Approach' });
+      const approachButton = page.locator('header div.hidden.md\\:flex button', { hasText: 'How we build' });
       await approachButton.click();
       await page.waitForTimeout(1000);
 
@@ -298,7 +298,7 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
 
       // Check all links are present in the mobile menu
       const mobileNav = page.locator('nav[role="dialog"]');
-      const navLinks = ['About', 'Philosophy', 'Sectors', 'KT Lab', 'Approach', 'Contact'];
+      const navLinks = ['About', 'Philosophy', 'Sectors', 'KT Lab', 'How we build', 'Contact'];
       for (const linkText of navLinks) {
         const link = mobileNav.locator('button', { hasText: linkText });
         await expect(link).toBeVisible();
@@ -378,7 +378,7 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
       const contactSection = page.locator('section#contact');
       await expect(contactSection).toBeVisible();
 
-      const heading = contactSection.locator('h2', { hasText: 'Work with us' });
+      const heading = contactSection.locator('h2', { hasText: 'Get in touch' });
       await expect(heading).toBeVisible();
     });
   });
