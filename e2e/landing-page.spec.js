@@ -371,7 +371,7 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
     test('should have mailto link with correct email address', async ({ page }) => {
       const emailLink = page.locator('a[href^="mailto:"]');
       await expect(emailLink).toBeVisible();
-      await expect(emailLink).toHaveAttribute('href', 'mailto:info@kabirtechnologies.co.uk');
+      await expect(emailLink).toHaveAttribute('href', 'mailto:ra.eesa@kabirtechnologies.co.uk');
     });
 
     test('should display contact section with correct heading', async ({ page }) => {

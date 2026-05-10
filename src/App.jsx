@@ -128,20 +128,58 @@ function App() {
         {/* KT Lab Section - Darkest */}
         <section id="lab" className="py-20 px-4 bg-kt-black-accent relative overflow-hidden">
           <SnakeMazeBackground />
-          <div className="max-w-4xl mx-auto relative" style={{ zIndex: 10, position: 'relative' }}>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-gold-light mb-6">
+          <div className="max-w-5xl mx-auto relative" style={{ zIndex: 10, position: 'relative' }}>
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-gold-light mb-4">
               KT Lab
             </h2>
-            <div className="space-y-4 text-lg text-kt-cream leading-relaxed">
-              <p>
-                KT Lab is the internal proto-lab where new tools are born. Some
-                experiments stay on the shelf; others become candidates for
-                spin-outs, licensing or deeper partnerships.
-              </p>
-              <p>
-                As the studio grows, this area will become a gallery of prototypes –
-                each with its own story, sector and ideal partner.
-              </p>
+            <p className="text-lg text-kt-cream leading-relaxed mb-4">
+              The internal proto-lab where tools are born. Some experiments stay on the shelf;
+              others earn their moment.
+            </p>
+            <p className="text-lg text-kt-gold-light/80 leading-relaxed mb-12">
+              Here's what's taking shape behind the curtain.
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Aqvera */}
+              <div className="p-6 rounded-2xl bg-kt-black border border-kt-gold/20 hover:border-kt-gold/50 hover:shadow-lg hover:shadow-kt-gold/5 transition-all duration-300 flex flex-col">
+                <div className="flex flex-wrap items-center gap-2 mb-4">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 px-3 py-1 rounded-full">
+                    Agriculture &amp; Water
+                  </span>
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-emerald-300 bg-emerald-300/10 border border-emerald-300/20 px-3 py-1 rounded-full">
+                    Phase 3 · Live
+                  </span>
+                </div>
+                <h3 className="font-display font-bold text-kt-gold-light text-2xl mb-2">Aqvera</h3>
+                <p className="text-kt-grey leading-relaxed mb-6 flex-1">
+                  Satellite-powered abstraction fairness and licence-risk scoring for UK water regulators and river trusts.
+                </p>
+                <a
+                  href="https://aqvera.co.uk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-sm font-medium text-kt-gold-light hover:text-kt-gold transition-colors self-start"
+                >
+                  Visit Aqvera →
+                </a>
+              </div>
+
+              {/* Proviso */}
+              <div className="p-6 rounded-2xl bg-kt-black border border-kt-gold/20 hover:border-kt-gold/50 hover:shadow-lg hover:shadow-kt-gold/5 transition-all duration-300 flex flex-col">
+                <div className="flex flex-wrap items-center gap-2 mb-4">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-kt-gold bg-kt-gold/10 border border-kt-gold/25 px-3 py-1 rounded-full">
+                    Special commission
+                  </span>
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">
+                    Phase 1 · In development
+                  </span>
+                </div>
+                <h3 className="font-display font-bold text-kt-gold-light text-2xl mb-2">—</h3>
+                <p className="text-kt-grey leading-relaxed flex-1">
+                  Early-stage tooling for a domain partner. Details to follow.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -203,7 +241,7 @@ function App() {
               Curious about what we're building, or want to follow our work? We're always open to a conversation.
             </p>
             <a
-              href="mailto:info@kabirtechnologies.co.uk"
+              href="mailto:ra.eesa@kabirtechnologies.co.uk"
               className="inline-block px-8 py-4 bg-gradient-to-r from-kt-gold-light to-kt-gold text-white font-medium rounded-xl hover:shadow-lg hover:shadow-kt-gold/30 hover:scale-105 transition-all duration-200"
             >
               Contact Us
