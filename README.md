@@ -117,7 +117,7 @@ All rights reserved © 2026 Kabir Technologies
 
 ## 📧 Contact
 
-zeyad@kabirtechnologies.co.uk
+ra.eesa@kabirtechnologies.co.uk
 
 ---
 
