@@ -1,385 +1,308 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Landing Page Load - Critical Path Tests', () => {
+const INTRO_KEY = 'kt-intro-played';
+const SECTORS = [
+  { name: 'Heritage & Architecture', icon: '/icon-heritage.svg' },
+  { name: 'Agriculture & Water Systems', icon: '/icon-agriculture.svg' },
+  { name: 'Healthcare & Diagnostics', icon: '/icon-healthcare.svg' },
+  { name: 'Biodiversity & Climate', icon: '/icon-biodiversity.svg' },
+  { name: 'Space & Frontier Systems', icon: '/icon-space.svg' },
+];
+
+const sectorButton = (page, name) => page.getByRole('button', { name: `Learn about ${name}` });
+const lowerThird = (page) => page.locator('.kt-lt');
+
+test.describe('Landing Page - Critical Path Tests', () => {
   test.beforeEach(async ({ page }) => {
+    // Skip the opening sequence so interactions start from the final frame
+    await page.addInitScript((key) => sessionStorage.setItem(key, '1'), INTRO_KEY);
     await page.goto('/');
   });
 
-  test.describe('Logo and hero section render correctly', () => {
+  test.describe('Opening shot', () => {
     test('should display the main logo', async ({ page }) => {
       const logo = page.locator('img[alt="Kabir Technologies"]');
       await expect(logo).toBeVisible();
       await expect(logo).toHaveAttribute('src', '/logo-main.svg');
     });
 
-    test('should display the hero section with correct layout', async ({ page, viewport }) => {
-      const heroSection = page.locator('section').first();
-      await expect(heroSection).toBeVisible();
-
-      // Check for early-stage badge
+    test('should display badge, instruction and tagline', async ({ page, viewport }) => {
       await expect(page.getByText(/early-stage deep tech studio/i)).toBeVisible();
-
-      // Check for instruction text (desktop shows "hover", mobile shows "tap")
       if (viewport.width < 1024) {
         await expect(page.getByText(/tap an icon to discover each sector/i)).toBeVisible();
+        await expect(page.getByText(/hover over an icon to discover each sector/i)).toBeHidden();
       } else {
         await expect(page.getByText(/hover over an icon to discover each sector/i)).toBeVisible();
       }
-
-      // Check for tagline
       await expect(page.getByText(/turning complex, under-served problems/i)).toBeVisible();
+      await expect(page.getByRole('button', { name: /enter the maze/i })).toBeVisible();
     });
 
-    test('should display scroll hint button', async ({ page }) => {
-      const scrollButton = page.getByRole('button', { name: /enter the maze/i });
-      await expect(scrollButton).toBeVisible();
-    });
-  });
+    test('should render all 5 sector marks over the pyramid', async ({ page }) => {
+      await expect(page.locator('[data-sector-button]')).toHaveCount(5);
 
-  test.describe('All 5 sector icons appear in correct positions', () => {
-    test('should render exactly 5 sector icon buttons', async ({ page }) => {
-      // Wait for sector icons to load
-      await page.waitForLoadState('networkidle');
+      const logoBox = await page.locator('img[alt="Kabir Technologies"]').boundingBox();
+      for (const sector of SECTORS) {
+        const icon = page.locator(`img[alt="${sector.name}"]`);
+        await expect(icon).toBeVisible();
+        await expect(icon).toHaveAttribute('src', sector.icon);
 
-      const sectorButtons = page.locator('button[aria-label*="Learn about"]');
-      await expect(sectorButtons).toHaveCount(5);
-    });
-
-    test('should display Heritage sector icon', async ({ page }) => {
-      const heritageIcon = page.locator('img[alt="Heritage & Architecture"]');
-      await expect(heritageIcon).toBeVisible();
-      await expect(heritageIcon).toHaveAttribute('src', '/icon-heritage.svg');
-    });
-
-    test('should display Agriculture sector icon', async ({ page }) => {
-      const agricultureIcon = page.locator('img[alt="Agriculture & Water Systems"]');
-      await expect(agricultureIcon).toBeVisible();
-      await expect(agricultureIcon).toHaveAttribute('src', '/icon-agriculture.svg');
-    });
-
-    test('should display Healthcare sector icon', async ({ page }) => {
-      const healthcareIcon = page.locator('img[alt="Healthcare & Diagnostics"]');
-      await expect(healthcareIcon).toBeVisible();
-      await expect(healthcareIcon).toHaveAttribute('src', '/icon-healthcare.svg');
-    });
-
-    test('should display Biodiversity sector icon', async ({ page }) => {
-      const biodiversityIcon = page.locator('img[alt="Biodiversity & Climate"]');
-      await expect(biodiversityIcon).toBeVisible();
-      await expect(biodiversityIcon).toHaveAttribute('src', '/icon-biodiversity.svg');
-    });
-
-    test('should display Space sector icon', async ({ page }) => {
-      const spaceIcon = page.locator('img[alt="Space & Frontier Systems"]');
-      await expect(spaceIcon).toBeVisible();
-      await expect(spaceIcon).toHaveAttribute('src', '/icon-space.svg');
-    });
-
-    test('sector icons should be positioned within the logo area', async ({ page }) => {
-      const logo = page.locator('img[alt="Kabir Technologies"]');
-      const logoBox = await logo.boundingBox();
-
-      const heritageButton = page.locator('button[aria-label*="Heritage"]');
-      const heritageBox = await heritageButton.boundingBox();
-
-      // Heritage icon should be near the logo
-      expect(heritageBox.x).toBeGreaterThan(logoBox.x - 100);
-      expect(heritageBox.x).toBeLessThan(logoBox.x + logoBox.width + 100);
-    });
-  });
-
-  test.describe('Snake maze background initializes without errors', () => {
-    test('should render canvas elements in background sections', async ({ page }) => {
-      // There are 3 canvas elements - one in Philosophy, Lab, and Contact sections
-      const canvases = page.locator('canvas');
-      await expect(canvases).toHaveCount(3);
-
-      // Check first canvas is visible
-      await expect(canvases.first()).toBeVisible();
-    });
-
-    test('should have canvas with correct styling', async ({ page }) => {
-      const canvas = page.locator('canvas').first();
-
-      // Check canvas classes
-      const classes = await canvas.getAttribute('class');
-      expect(classes).toContain('absolute');
-      expect(classes).toContain('inset-0');
-    });
-
-    test('should initialize canvas without JavaScript errors', async ({ page }) => {
-      const consoleErrors = [];
-      page.on('console', (msg) => {
-        if (msg.type() === 'error') {
-          consoleErrors.push(msg.text());
-        }
-      });
-
-      page.on('pageerror', (error) => {
-        consoleErrors.push(error.message);
-      });
-
-      await page.waitForTimeout(2000); // Wait for animations to start
-
-      // Check no critical errors occurred
-      const criticalErrors = consoleErrors.filter(
-        (error) => !error.includes('404') // Ignore 404s for optional resources
-      );
-      expect(criticalErrors.length).toBe(0);
-    });
-
-    test('canvas should have correct dimensions', async ({ page }) => {
-      const canvas = page.locator('canvas').first();
-      const canvasBox = await canvas.boundingBox();
-
-      // Canvas should have reasonable dimensions
-      expect(canvasBox.width).toBeGreaterThan(100);
-      expect(canvasBox.height).toBeGreaterThan(100);
-    });
-  });
-
-  test.describe('Sector Interaction', () => {
-    test('should allow hovering over all 5 sector icons without errors (desktop)', async ({ page, viewport }) => {
-      test.skip(viewport.width < 1024, 'Desktop-only test');
-
-      await page.waitForLoadState('networkidle');
-
-      const sectors = ['Heritage', 'Agriculture', 'Healthcare', 'Biodiversity', 'Space'];
-
-      for (const sector of sectors) {
-        const button = page.locator(`button[aria-label*="${sector}"]`);
-        await button.hover();
-        await page.waitForTimeout(100);
-
-        // Verify button is still visible after hover (no JavaScript errors)
-        await expect(button).toBeVisible();
+        const box = await sectorButton(page, sector.name).boundingBox();
+        expect(box.x).toBeGreaterThan(logoBox.x - 20);
+        expect(box.x + box.width).toBeLessThan(logoBox.x + logoBox.width + 20);
       }
+    });
+
+    test('should render the gold dust without errors', async ({ page }) => {
+      const errors = [];
+      page.on('pageerror', (error) => errors.push(error.message));
+      page.on('console', (msg) => msg.type() === 'error' && errors.push(msg.text()));
+
+      await page.reload();
+      await page.waitForTimeout(1500);
+
+      const dust = page.locator('canvas.kt-dust');
+      await expect(dust).toHaveCount(1);
+      const box = await dust.boundingBox();
+      expect(box.width).toBeGreaterThan(100);
+      expect(box.height).toBeGreaterThan(100);
+      expect(errors.filter((e) => !e.includes('404'))).toEqual([]);
+    });
+  });
+
+  test.describe('Opening sequence plays once per session', () => {
+    test('plays on a fresh session and not on reload', async ({ browser }) => {
+      const context = await browser.newContext();
+      const page = await context.newPage();
+      await page.goto('/');
+      await expect(page.locator('section').first()).toHaveClass(/\bplay\b/);
+
+      await page.reload();
+      await expect(page.locator('section').first()).not.toHaveClass(/\bplay\b/);
+      await context.close();
+    });
+  });
+
+  test.describe('Focus pull (desktop)', () => {
+    test.beforeEach(async ({ viewport }) => {
+      test.skip(viewport.width < 1024, 'Desktop-only test');
+    });
+
+    test('hovering each mark names its sector in the lower third', async ({ page }) => {
+      for (const sector of SECTORS) {
+        await sectorButton(page, sector.name).hover();
+        await expect(lowerThird(page).getByRole('heading', { name: sector.name })).toBeVisible();
+      }
+    });
+
+    test('the lower third holds steady while hovering', async ({ page }) => {
+      await sectorButton(page, SECTORS[1].name).hover();
+      const card = lowerThird(page).locator('.kt-lt-card');
+      await expect(card).toBeVisible();
+      await page.waitForTimeout(900);
+      await expect(card).toHaveCSS('opacity', '1');
+    });
+
+    test('moving away clears the focus', async ({ page }) => {
+      await sectorButton(page, SECTORS[0].name).hover();
+      await expect(lowerThird(page).locator('h3')).toHaveCount(1);
+      await page.mouse.move(5, 300);
+      await expect(lowerThird(page).locator('h3')).toHaveCount(0);
+    });
+  });
+
+  test.describe('Tap to explore (mobile)', () => {
+    test.beforeEach(async ({ viewport }) => {
+      test.skip(viewport.width >= 1024, 'Mobile-only test');
+    });
+
+    test('tapping a mark shows its sector, tapping again hides it', async ({ page }) => {
+      const heritage = sectorButton(page, SECTORS[0].name);
+      await heritage.click();
+      await expect(lowerThird(page).getByRole('heading', { name: SECTORS[0].name })).toBeVisible();
+
+      await heritage.click();
+      await expect(lowerThird(page).locator('h3')).toHaveCount(0);
+    });
+
+    test('tapping a different mark switches sector', async ({ page }) => {
+      await sectorButton(page, SECTORS[0].name).click();
+      await sectorButton(page, SECTORS[1].name).click();
+      await expect(lowerThird(page).getByRole('heading', { name: SECTORS[0].name })).toHaveCount(0);
+      await expect(lowerThird(page).getByRole('heading', { name: SECTORS[1].name })).toBeVisible();
+    });
+
+    test('tapping outside closes the sector', async ({ page }) => {
+      await sectorButton(page, SECTORS[0].name).click();
+      await expect(lowerThird(page).locator('h3')).toHaveCount(1);
+      await page.getByText(/turning complex, under-served problems/i).click();
+      await expect(lowerThird(page).locator('h3')).toHaveCount(0);
     });
   });
 
   test.describe('Navigation Flow', () => {
-    test('should scroll to About section when clicking "Enter the maze"', async ({ page }) => {
-      const scrollButton = page.getByRole('button', { name: /enter the maze/i });
-      await scrollButton.click();
-
-      // Wait for smooth scroll to complete
+    test('should scroll to About when clicking "Enter the maze"', async ({ page }) => {
+      await page.getByRole('button', { name: /enter the maze/i }).click();
       await page.waitForTimeout(1000);
-
-      // Check that we've scrolled down
-      const scrollY = await page.evaluate(() => window.scrollY);
-      expect(scrollY).toBeGreaterThan(100);
+      expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(100);
     });
 
-    test('should navigate to About section via header link (desktop)', async ({ page, viewport }) => {
+    for (const label of ['About', 'Philosophy', 'Sectors', 'KT Lab', 'How we build', 'Contact']) {
+      test(`should navigate to ${label} via header link (desktop)`, async ({ page, viewport }) => {
+        test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
+
+        await page.locator('header div.hidden.md\\:flex button', { hasText: label }).click();
+        await page.waitForTimeout(1200);
+        expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(100);
+      });
+    }
+
+    test('should land on the contact card from the header', async ({ page, viewport }) => {
       test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
 
-      const aboutButton = page.locator('header div.hidden.md\\:flex button', { hasText: 'About' });
-      await aboutButton.click();
-      await page.waitForTimeout(1000);
-
-      const scrollY = await page.evaluate(() => window.scrollY);
-      expect(scrollY).toBeGreaterThan(100);
-    });
-
-    test('should navigate to Philosophy section via header link (desktop)', async ({ page, viewport }) => {
-      test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
-
-      const philosophyButton = page.locator('header div.hidden.md\\:flex button', { hasText: 'Philosophy' });
-      await philosophyButton.click();
-      await page.waitForTimeout(1000);
-
-      const scrollY = await page.evaluate(() => window.scrollY);
-      expect(scrollY).toBeGreaterThan(100);
-    });
-
-    test('should navigate to Sectors section via header link (desktop)', async ({ page, viewport }) => {
-      test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
-
-      const sectorsButton = page.locator('header div.hidden.md\\:flex button', { hasText: 'Sectors' });
-      await sectorsButton.click();
-      await page.waitForTimeout(1000);
-
-      const scrollY = await page.evaluate(() => window.scrollY);
-      expect(scrollY).toBeGreaterThan(100);
-    });
-
-    test('should navigate to Lab section via header link (desktop)', async ({ page, viewport }) => {
-      test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
-
-      const labButton = page.locator('header div.hidden.md\\:flex button', { hasText: 'KT Lab' });
-      await labButton.click();
-      await page.waitForTimeout(1000);
-
-      const scrollY = await page.evaluate(() => window.scrollY);
-      expect(scrollY).toBeGreaterThan(100);
-    });
-
-    test('should navigate to How we build section via header link (desktop)', async ({ page, viewport }) => {
-      test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
-
-      const approachButton = page.locator('header div.hidden.md\\:flex button', { hasText: 'How we build' });
-      await approachButton.click();
-      await page.waitForTimeout(1000);
-
-      const scrollY = await page.evaluate(() => window.scrollY);
-      expect(scrollY).toBeGreaterThan(100);
-    });
-
-    test('should navigate to Contact section via header link (desktop)', async ({ page, viewport }) => {
-      test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
-
-      const contactButton = page.locator('header div.hidden.md\\:flex button', { hasText: 'Contact' });
-      await contactButton.click();
-      await page.waitForTimeout(1000);
-
-      const scrollY = await page.evaluate(() => window.scrollY);
-      expect(scrollY).toBeGreaterThan(100);
+      await page.locator('header div.hidden.md\\:flex button', { hasText: 'Contact' }).click();
+      await page.waitForTimeout(1500);
+      await expect(page.getByRole('heading', { name: 'Get in touch' })).toBeInViewport();
     });
 
     test('should return to top when clicking logo in header (desktop)', async ({ page, viewport }) => {
       test.skip(viewport.width < 768, 'Desktop-only test - nav links hidden on mobile');
 
-      // First scroll down to Contact section
-      const contactButton = page.locator('header div.hidden.md\\:flex button', { hasText: 'Contact' });
-      await contactButton.click();
-      await page.waitForTimeout(1000);
+      await page.locator('header div.hidden.md\\:flex button', { hasText: 'Contact' }).click();
+      await page.waitForTimeout(1200);
+      expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(100);
 
-      // Verify we've scrolled down
-      let scrollY = await page.evaluate(() => window.scrollY);
-      expect(scrollY).toBeGreaterThan(100);
-
-      // Click logo button in header to return to top
-      const logoButton = page.locator('header button img[alt="KT"]');
-      await logoButton.click();
-      await page.waitForTimeout(1000);
-
-      // Verify we're back at the top
-      scrollY = await page.evaluate(() => window.scrollY);
-      expect(scrollY).toBeLessThan(100);
+      await page.locator('header button img[alt="KT"]').click();
+      await page.waitForTimeout(1500);
+      expect(await page.evaluate(() => window.scrollY)).toBeLessThan(100);
     });
 
-    test('should use smooth scroll behavior for all navigation', async ({ page }) => {
-      // Check that scroll-behavior: smooth is applied
-      const htmlElement = page.locator('html');
-      const scrollBehavior = await htmlElement.evaluate((el) =>
-        window.getComputedStyle(el).scrollBehavior
-      );
-
+    test('should use smooth scroll behavior', async ({ page }) => {
+      const scrollBehavior = await page.locator('html').evaluate((el) => getComputedStyle(el).scrollBehavior);
       expect(scrollBehavior).toBe('smooth');
     });
   });
 
+  test.describe('Scroll scenes', () => {
+    test('pinned scenes hold the frame while scrolling (desktop)', async ({ page, viewport }) => {
+      test.skip(viewport.width < 1024, 'Pins are desktop-only for Sectors');
+
+      const pin = page.locator('#sectors .kt-pin');
+      await expect(pin).toHaveCSS('position', 'sticky');
+
+      await page.evaluate(() => {
+        const el = document.getElementById('sectors');
+        window.scrollTo({ top: el.offsetTop + el.offsetHeight * 0.35, behavior: 'instant' });
+      });
+      const box = await pin.boundingBox();
+      expect(Math.abs(box.y)).toBeLessThan(2);
+    });
+
+    test('the pillars scene steps through each sector (desktop)', async ({ page, viewport }) => {
+      test.skip(viewport.width < 1024, 'Desktop-only test');
+
+      await page.evaluate(() => {
+        const el = document.getElementById('sectors');
+        const span = el.offsetHeight - window.innerHeight;
+        window.scrollTo({ top: el.offsetTop + span * (2.5 / 6), behavior: 'instant' });
+      });
+      await expect(
+        page.locator('#sectors').getByRole('heading', { name: 'Agriculture & Water Systems' })
+      ).toBeVisible();
+    });
+
+    test('every pillar is listed on mobile', async ({ page, viewport }) => {
+      test.skip(viewport.width >= 1024, 'Mobile-only test');
+      await expect(page.locator('.kt-pillar-card')).toHaveCount(5);
+    });
+  });
+
+  test.describe('KT Lab', () => {
+    test('shows Aqvera and links to its site', async ({ page }) => {
+      const lab = page.locator('#lab');
+      await expect(lab.getByRole('heading', { name: 'Aqvera' })).toBeAttached();
+      await expect(lab.getByRole('link', { name: /visit aqvera/i })).toHaveAttribute(
+        'href',
+        'https://aqvera.co.uk'
+      );
+    });
+
+    test('plays the title sequence when scrolled into view', async ({ page }) => {
+      const card = page.locator('#lab .kt-tc').first();
+      await card.scrollIntoViewIfNeeded();
+      await expect(card).toHaveClass(/is-run/);
+      await expect(card.getByRole('link', { name: /visit aqvera/i })).toBeVisible();
+    });
+
+    test('does not list the special commission', async ({ page }) => {
+      await expect(page.getByText(/special commission/i)).toHaveCount(0);
+    });
+  });
+
   test.describe('Mobile Menu', () => {
-    test('should show hamburger menu button on mobile', async ({ page, viewport }) => {
+    test.beforeEach(async ({ viewport }) => {
       test.skip(viewport.width >= 768, 'Mobile-only test');
-
-      const hamburgerButton = page.locator('header button[aria-label*="menu"]');
-      await expect(hamburgerButton).toBeVisible();
     });
 
-    test('should open mobile menu when hamburger clicked', async ({ page, viewport }) => {
-      test.skip(viewport.width >= 768, 'Mobile-only test');
-
-      const hamburgerButton = page.locator('header button[aria-label*="menu"]');
-      await hamburgerButton.click();
-
-      // Mobile menu should be visible
-      const mobileMenu = page.locator('[role="dialog"]').or(page.locator('nav[aria-label*="mobile"]'));
-      await expect(mobileMenu).toBeVisible();
+    test('should show hamburger menu button on mobile', async ({ page }) => {
+      await expect(page.locator('header button[aria-label*="menu"]')).toBeVisible();
     });
 
-    test('should display all navigation links in mobile menu', async ({ page, viewport }) => {
-      test.skip(viewport.width >= 768, 'Mobile-only test');
-
-      // Open menu
-      const hamburgerButton = page.locator('header button[aria-label*="menu"]');
-      await hamburgerButton.click();
-      await page.waitForTimeout(500);
-
-      // Check all links are present in the mobile menu
+    test('should open and list all navigation links', async ({ page }) => {
+      await page.locator('header button[aria-label*="menu"]').click();
       const mobileNav = page.locator('nav[role="dialog"]');
-      const navLinks = ['About', 'Philosophy', 'Sectors', 'KT Lab', 'How we build', 'Contact'];
-      for (const linkText of navLinks) {
-        const link = mobileNav.locator('button', { hasText: linkText });
-        await expect(link).toBeVisible();
+      await expect(mobileNav).toBeVisible();
+      for (const linkText of ['About', 'Philosophy', 'Sectors', 'KT Lab', 'How we build', 'Contact']) {
+        await expect(mobileNav.locator('button', { hasText: linkText })).toBeVisible();
       }
     });
 
-    test('should close menu when close button clicked', async ({ page, viewport }) => {
-      test.skip(viewport.width >= 768, 'Mobile-only test');
-
-      // Open menu
+    test('should close menu when close button clicked', async ({ page }) => {
       const hamburgerButton = page.locator('header button[aria-label*="menu"]');
       await hamburgerButton.click();
       await page.waitForTimeout(300);
-
-      // Close menu by clicking hamburger button again (which is now a close button)
       await hamburgerButton.click();
       await page.waitForTimeout(400);
-
-      // Menu should be translated off-screen
-      const mobileMenu = page.locator('nav[role="dialog"]');
-      const menuClasses = await mobileMenu.getAttribute('class');
-      expect(menuClasses).toContain('translate-x-full');
+      await expect(page.locator('nav[role="dialog"]')).toHaveClass(/translate-x-full/);
     });
 
-    test('should close menu and scroll when navigation link clicked', async ({ page, viewport }) => {
-      test.skip(viewport.width >= 768, 'Mobile-only test');
-
-      // Open menu
-      const hamburgerButton = page.locator('header button[aria-label*="menu"]');
-      await hamburgerButton.click();
+    test('should close menu and scroll when navigation link clicked', async ({ page }) => {
+      await page.locator('header button[aria-label*="menu"]').click();
       await page.waitForTimeout(300);
-
-      // Click About link in mobile menu
       const mobileNav = page.locator('nav[role="dialog"]');
-      const aboutLink = mobileNav.locator('button', { hasText: 'About' });
-      await aboutLink.click();
+      await mobileNav.locator('button', { hasText: 'About' }).click();
+      await page.waitForTimeout(600);
 
-      // Wait for transition to complete
-      await page.waitForTimeout(400);
-
-      // Menu should have translated off-screen
-      const menuClasses = await mobileNav.getAttribute('class');
-      expect(menuClasses).toContain('translate-x-full');
-
-      // Page should scroll
-      const scrollY = await page.evaluate(() => window.scrollY);
-      expect(scrollY).toBeGreaterThan(100);
-    });
-
-    test('should animate menu smoothly', async ({ page, viewport }) => {
-      test.skip(viewport.width >= 768, 'Mobile-only test');
-
-      const hamburgerButton = page.locator('header button[aria-label*="menu"]');
-
-      // Open menu and check for transition
-      await hamburgerButton.click();
-      await page.waitForTimeout(100);
-
-      const mobileMenu = page.locator('[role="dialog"]').or(page.locator('nav[aria-label*="mobile"]'));
-      const hasTransition = await mobileMenu.evaluate((el) => {
-        const style = window.getComputedStyle(el);
-        return style.transition !== 'all 0s ease 0s' && style.transition !== '';
-      });
-
-      expect(hasTransition).toBeTruthy();
+      await expect(mobileNav).toHaveClass(/translate-x-full/);
+      expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(100);
     });
   });
 
   test.describe('Contact', () => {
-    test('should have mailto link with correct email address', async ({ page }) => {
+    test('should have a single mailto link with the correct address', async ({ page }) => {
       const emailLink = page.locator('a[href^="mailto:"]');
-      await expect(emailLink).toBeVisible();
+      await expect(emailLink).toHaveCount(1);
       await expect(emailLink).toHaveAttribute('href', 'mailto:ra.eesa@kabirtechnologies.co.uk');
     });
 
-    test('should display contact section with correct heading', async ({ page }) => {
-      const contactSection = page.locator('section#contact');
-      await expect(contactSection).toBeVisible();
+    test('should display the contact section with heading and address', async ({ page }) => {
+      const contact = page.locator('section#contact');
+      await contact.scrollIntoViewIfNeeded();
+      await expect(contact.getByRole('heading', { name: 'Get in touch' })).toBeVisible();
+      await expect(contact.getByText('ra.eesa@kabirtechnologies.co.uk')).toBeVisible();
+    });
+  });
 
-      const heading = contactSection.locator('h2', { hasText: 'Get in touch' });
-      await expect(heading).toBeVisible();
+  test.describe('Reduced motion', () => {
+    test('shows every scene without pins or the opening sequence', async ({ browser }) => {
+      const context = await browser.newContext({ reducedMotion: 'reduce' });
+      const page = await context.newPage();
+      await page.goto('/');
+
+      await expect(page.locator('section').first()).not.toHaveClass(/\bplay\b/);
+      await expect(page.locator('.kt-pin')).toHaveCount(0);
+      await expect(page.getByText('A small deep-tech studio', { exact: true })).toBeVisible();
+      await context.close();
     });
   });
 
@@ -389,169 +312,22 @@ test.describe('Landing Page Load - Critical Path Tests', () => {
       // eslint-disable-next-line no-undef
       test.skip(!!process.env.CI, 'Screenshot tests run locally only');
 
-      // This test creates baseline screenshots on first run
-      // Run with: npx playwright test --update-snapshots
-      // to create/update baseline screenshots
-
-      // Wait for page to be fully loaded
       await page.waitForLoadState('networkidle');
-      await page.waitForTimeout(500); // Wait for animations
-
-      // Take screenshot of hero section
-      const heroSection = page.locator('section').first();
-      await expect(heroSection).toHaveScreenshot('hero-section.png', {
-        maxDiffPixels: 100, // Allow minor rendering differences
+      const hero = page.locator('section').first();
+      await expect(hero).toHaveScreenshot('hero-section.png', {
+        animations: 'disabled',
+        mask: [page.locator('canvas.kt-dust'), page.locator('.kt-hud')],
+        maxDiffPixels: 100,
       });
     });
-  });
-
-  test.describe('Mobile responsiveness', () => {
-    test('should display correctly on mobile viewport', async ({ page }) => {
-      await page.setViewportSize({ width: 375, height: 667 });
-
-      // Logo should be visible
-      const logo = page.locator('img[alt="Kabir Technologies"]');
-      await expect(logo).toBeVisible();
-
-      // Sector icons should still be visible
-      const sectorButtons = page.locator('button[aria-label*="Learn about"]');
-      await expect(sectorButtons.first()).toBeVisible();
-
-      // Scroll button should be visible
-      const scrollButton = page.getByRole('button', { name: /enter the maze/i });
-      await expect(scrollButton).toBeVisible();
-    });
-
-    test('should have proper spacing between badge and logo on mobile', async ({ page, viewport }) => {
-      test.skip(viewport.width >= 768, 'Mobile-only test');
-
-      // Get badge and logo elements
-      const badge = page.locator('span:has-text("Early-stage deep tech studio")');
-      const logo = page.locator('img[alt="Kabir Technologies"]');
-
-      await expect(badge).toBeVisible();
-      await expect(logo).toBeVisible();
-
-      // Get bounding boxes
-      const badgeBox = await badge.boundingBox();
-      const logoBox = await logo.boundingBox();
-
-      // Calculate the gap between badge and logo
-      const badgeToLogoGap = logoBox.y - (badgeBox.y + badgeBox.height);
-
-      // Should have clearance - badge should be above the logo with mb-12 (48px minimum)
-      // Allow for some flex spacing variability
-      expect(badgeToLogoGap).toBeGreaterThanOrEqual(30);
-    });
-
-    test('should show sector card when tapping icon on mobile', async ({ page, viewport }) => {
-      test.skip(viewport.width >= 1024, 'Mobile-only test');
-
-      // Wait for page to be fully loaded
-      await page.waitForLoadState('networkidle');
-
-      // Find a sector icon button (Heritage sector)
-      const heritageButton = page.locator('[data-sector-button]').first();
-      await expect(heritageButton).toBeVisible();
-
-      // Mobile card container should exist but be empty initially
-      const mobileCardContainer = page.locator('.lg\\:hidden.w-full.max-w-xl.px-4');
-
-      // Initially no card content
-      const initialCount = await mobileCardContainer.locator('h3').count();
-      expect(initialCount).toBe(0);
-
-      // Tap the icon
-      await heritageButton.click();
-
-      // Card should appear with Heritage title (look for the h3 heading specifically)
-      const sectorCardHeading = mobileCardContainer.locator('h3').filter({ hasText: 'Heritage' });
-      await expect(sectorCardHeading).toBeVisible({ timeout: 2000 });
-    });
-
-    test('should toggle sector card on mobile when tapping same icon twice', async ({ page, viewport }) => {
-      test.skip(viewport.width >= 1024, 'Mobile-only test');
-
-      const heritageButton = page.locator('[data-sector-button]').first();
-      const mobileCardContainer = page.locator('.lg\\:hidden.w-full.max-w-xl.px-4');
-
-      // First tap - card appears
-      await heritageButton.click();
-      const sectorCardHeading = mobileCardContainer.locator('h3').filter({ hasText: 'Heritage' });
-      await expect(sectorCardHeading).toBeVisible();
-
-      // Second tap - card disappears
-      await heritageButton.click();
-      const headingCount = await mobileCardContainer.locator('h3').count();
-      expect(headingCount).toBe(0);
-    });
-
-    test('should switch cards when tapping different sector icons on mobile', async ({ page, viewport }) => {
-      test.skip(viewport.width >= 1024, 'Mobile-only test');
-
-      const heritageButton = page.locator('[data-sector-button]').first();
-      const agricultureButton = page.locator('[data-sector-button]').nth(1);
-      const mobileCardContainer = page.locator('.lg\\:hidden.w-full.max-w-xl.px-4');
-
-      // Tap first icon
-      await heritageButton.click();
-      await expect(mobileCardContainer.locator('h3').filter({ hasText: 'Heritage' })).toBeVisible();
-
-      // Tap second icon
-      await agricultureButton.click();
-
-      // First card should be gone, second should appear
-      await expect(mobileCardContainer.locator('h3').filter({ hasText: 'Heritage' })).not.toBeVisible();
-      await expect(mobileCardContainer.locator('h3').filter({ hasText: 'Agriculture' })).toBeVisible();
-    });
-
-    test('should close card when tapping outside on mobile', async ({ page, viewport }) => {
-      test.skip(viewport.width >= 1024, 'Mobile-only test');
-
-      const heritageButton = page.locator('[data-sector-button]').first();
-      const mobileCardContainer = page.locator('.lg\\:hidden.w-full.max-w-xl.px-4');
-
-      // Tap icon to show card
-      await heritageButton.click();
-      const sectorCardHeading = mobileCardContainer.locator('h3').filter({ hasText: 'Heritage' });
-      await expect(sectorCardHeading).toBeVisible();
-
-      // Tap outside the card and button (on the background section, forcing through any overlays)
-      await page.locator('section').first().click({ position: { x: 10, y: 10 }, force: true });
-
-      // Wait a moment for the click handler to process
-      await page.waitForTimeout(300);
-
-      // Card should disappear
-      const headingCount = await mobileCardContainer.locator('h3').count();
-      expect(headingCount).toBe(0);
-    });
-
-    test('should show correct instruction text on mobile', async ({ page, viewport }) => {
-      test.skip(viewport.width >= 1024, 'Mobile-only test');
-
-      // Mobile should show "Tap" instruction
-      const tapInstruction = page.locator('text=Tap an icon to discover each sector');
-      await expect(tapInstruction).toBeVisible();
-
-      // Should not show hover instruction
-      const hoverInstruction = page.locator('text=Hover over an icon to discover each sector');
-      await expect(hoverInstruction).not.toBeVisible();
-    });
-
   });
 
   test.describe('Performance', () => {
     test('should load within acceptable time', async ({ page }) => {
       const startTime = Date.now();
-
       await page.goto('/');
       await page.waitForLoadState('networkidle');
-
-      const loadTime = Date.now() - startTime;
-
-      // Should load within 5 seconds
-      expect(loadTime).toBeLessThan(5000);
+      expect(Date.now() - startTime).toBeLessThan(5000);
     });
   });
 });

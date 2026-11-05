@@ -1,6 +1,7 @@
 export const sectors = [
   {
     id: "heritage",
+    grade: "Stone",
     name: "Heritage & Architecture",
     icon: "/icon-heritage.svg",
     strapline: "Intelligent tools for fragile built heritage.",
@@ -16,6 +17,7 @@ export const sectors = [
   },
   {
     id: "agriculture",
+    grade: "Field",
     name: "Agriculture & Water Systems",
     icon: "/icon-agriculture.svg",
     strapline: "Fair, transparent insight into land and water use.",
@@ -31,6 +33,7 @@ export const sectors = [
   },
   {
     id: "healthcare",
+    grade: "Clinic",
     name: "Healthcare & Diagnostics",
     icon: "/icon-healthcare.svg",
     strapline: "Pattern recognition for subtle clinical signals.",
@@ -46,6 +49,7 @@ export const sectors = [
   },
   {
     id: "biodiversity",
+    grade: "Canopy",
     name: "Biodiversity & Climate",
     icon: "/icon-biodiversity.svg",
     strapline: "Watching ecosystems on the edge.",
@@ -61,6 +65,7 @@ export const sectors = [
   },
   {
     id: "space",
+    grade: "Night",
     name: "Space & Frontier Systems",
     icon: "/icon-space.svg",
     strapline: "Simulating routes beyond the obvious.",

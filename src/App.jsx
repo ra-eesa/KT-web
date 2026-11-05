@@ -1,253 +1,29 @@
 import HeaderNav from './components/HeaderNav';
 import LogoHero from './components/LogoHero';
-import SnakeMazeBackground from './components/SnakeMazeBackground';
+import About from './components/About';
+import Philosophy from './components/Philosophy';
+import Sectors from './components/Sectors';
+import Lab from './components/Lab';
+import Approach from './components/Approach';
+import Credits from './components/Credits';
+import Contact from './components/Contact';
 
+// The site runs as seven scenes in scroll order (see each component's header comment)
 function App() {
   return (
     <div className="min-h-screen bg-kt-black">
       <HeaderNav />
-      
+
       <LogoHero />
 
       <main>
-        {/* About Section - Dark Beige */}
-        <section id="about" className="py-20 px-4 bg-kt-beige-dark">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-gold-light mb-6">
-              Who we are
-            </h2>
-            <p className="text-lg text-kt-grey-light leading-relaxed">
-              Kabir Technologies is a small deep-tech studio focused on overlooked
-              problems in architecture, agriculture, healthcare, biodiversity and space. 
-              We design and build early-stage AI-driven tools, then partner, license or 
-              spin them out once they prove their value.
-            </p>
-          </div>
-        </section>
-
-        {/* Philosophy Section - Darkest for contrast */}
-        <section id="philosophy" className="py-20 px-4 bg-kt-black-accent relative overflow-hidden">
-          <SnakeMazeBackground />
-          <div className="max-w-6xl mx-auto relative" style={{ zIndex: 10, position: 'relative' }}>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-gold-light mb-8">
-              Philosophy &amp; principles
-            </h2>
-            
-            <div className="grid md:grid-cols-2 gap-12">
-              <div>
-                <p className="text-lg text-kt-cream leading-relaxed">
-                  KT exists to build tools that quietly change how people work, not noisy 
-                  demos that vanish in a year. We care about clarity, ethics and long-term utility.
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                {[
-                  {
-                    title: 'Clarity over hype',
-                    desc: 'We explain the problem and the prototype in plain language.',
-                  },
-                  {
-                    title: 'Ethics before efficiency',
-                    desc: 'We consider data, impact and governance from the start.',
-                  },
-                  {
-                    title: 'Niche > mainstream',
-                    desc: 'We choose sectors where a precise tool can have outsized leverage.',
-                  },
-                  {
-                    title: 'Prototypes first, pitch decks later',
-                    desc: 'We prefer showing something that runs to talking about what might exist.',
-                  },
-                ].map((principle, i) => (
-                  <div
-                    key={i}
-                    className="p-4 rounded-xl bg-kt-forest/10 border border-kt-gold/20 hover:border-kt-gold/40 transition-colors duration-200"
-                  >
-                    <h3 className="font-display font-semibold text-kt-gold-light mb-1">
-                      {principle.title}
-                    </h3>
-                    <p className="text-sm text-kt-grey">{principle.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Sectors Section - Dark Beige */}
-        <section id="sectors" className="py-20 px-4 bg-kt-beige-dark">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-gold-light mb-3">
-                Where we play
-              </h2>
-              <p className="text-xl text-kt-gold">The Five Pillars</p>
-              <p className="text-base text-kt-grey-light mt-4 max-w-3xl mx-auto">
-                These are the domains where we see opportunity for thoughtful, leverageable tools. Areas where a precisely built prototype can have outsized impact.
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                {
-                  name: 'Heritage & Architecture',
-                  desc: 'Structural monitoring, digital preservation, and conservation planning for historic sites.',
-                },
-                {
-                  name: 'Agriculture & Water Systems',
-                  desc: 'Water equity, irrigation optimization, and climate-adaptive farming practices.',
-                },
-                {
-                  name: 'Healthcare & Diagnostics',
-                  desc: 'Early detection, clinical decision support, and pattern recognition in medical data.',
-                },
-                {
-                  name: 'Biodiversity & Climate',
-                  desc: 'Habitat tracking, ecosystem health assessment, and conservation prioritization.',
-                },
-                {
-                  name: 'Space & Frontier Systems',
-                  desc: 'Orbital logistics, mission planning, and extreme environment operations.',
-                },
-              ].map((sector, i) => (
-                <div
-                  key={i}
-                  className="p-6 rounded-2xl bg-kt-black border border-kt-gold/20 hover:border-kt-gold/50 hover:shadow-lg hover:shadow-kt-gold/5 transition-all duration-300"
-                >
-                  <h3 className="font-display font-semibold text-kt-gold-light text-lg mb-2">
-                    {sector.name}
-                  </h3>
-                  <p className="text-sm text-kt-grey">{sector.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* KT Lab Section - Darkest */}
-        <section id="lab" className="py-20 px-4 bg-kt-black-accent relative overflow-hidden">
-          <SnakeMazeBackground />
-          <div className="max-w-5xl mx-auto relative" style={{ zIndex: 10, position: 'relative' }}>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-gold-light mb-4">
-              KT Lab
-            </h2>
-            <p className="text-lg text-kt-cream leading-relaxed mb-4">
-              The internal proto-lab where tools are born. Some experiments stay on the shelf;
-              others earn their moment.
-            </p>
-            <p className="text-lg text-kt-gold-light/80 leading-relaxed mb-12">
-              Here's what's taking shape behind the curtain.
-            </p>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Aqvera */}
-              <div className="p-6 rounded-2xl bg-kt-black border border-kt-gold/20 hover:border-kt-gold/50 hover:shadow-lg hover:shadow-kt-gold/5 transition-all duration-300 flex flex-col">
-                <div className="flex flex-wrap items-center gap-2 mb-4">
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 px-3 py-1 rounded-full">
-                    Agriculture &amp; Water
-                  </span>
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-emerald-300 bg-emerald-300/10 border border-emerald-300/20 px-3 py-1 rounded-full">
-                    Phase 3 · Live
-                  </span>
-                </div>
-                <h3 className="font-display font-bold text-kt-gold-light text-2xl mb-2">Aqvera</h3>
-                <p className="text-kt-grey leading-relaxed mb-6 flex-1">
-                  Satellite-powered abstraction fairness and licence-risk scoring for UK water regulators and river trusts.
-                </p>
-                <a
-                  href="https://aqvera.co.uk"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-sm font-medium text-kt-gold-light hover:text-kt-gold transition-colors self-start"
-                >
-                  Visit Aqvera →
-                </a>
-              </div>
-
-              {/* Proviso */}
-              <div className="p-6 rounded-2xl bg-kt-black border border-kt-gold/20 hover:border-kt-gold/50 hover:shadow-lg hover:shadow-kt-gold/5 transition-all duration-300 flex flex-col">
-                <div className="flex flex-wrap items-center gap-2 mb-4">
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-kt-gold bg-kt-gold/10 border border-kt-gold/25 px-3 py-1 rounded-full">
-                    Special commission
-                  </span>
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">
-                    Phase 1 · In development
-                  </span>
-                </div>
-                <h3 className="font-display font-bold text-kt-gold-light text-2xl mb-2">—</h3>
-                <p className="text-kt-grey leading-relaxed flex-1">
-                  Early-stage tooling for a domain partner. Details to follow.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* How we build Section - Dark */}
-        <section id="approach" className="py-20 px-4 bg-kt-black-lighter relative overflow-hidden">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-gold-light mb-12 text-center">
-              How we build
-            </h2>
-
-            <div className="grid md:grid-cols-4 gap-8">
-              {[
-                {
-                  step: '01',
-                  title: 'Identify',
-                  desc: 'We spot neglected problems in complex, underserved domains where a precise tool can have outsized leverage.',
-                },
-                {
-                  step: '02',
-                  title: 'Build',
-                  desc: 'We design and engineer a working prototype in a controlled environment — fast and focused.',
-                },
-                {
-                  step: '03',
-                  title: 'Stress-test',
-                  desc: 'We run the prototype against real-world scenarios, measure outcomes, and refine until it holds.',
-                },
-                {
-                  step: '04',
-                  title: 'Release',
-                  desc: 'We license, spin out, or open the tool to the world — retaining a stake in what we\'ve built.',
-                },
-              ].map((phase) => (
-                <div key={phase.step} className="text-center group">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-white font-display font-bold text-lg">
-                      {phase.step}
-                    </span>
-                  </div>
-                  <h3 className="font-display font-semibold text-kt-gold-light text-lg mb-2">
-                    {phase.title}
-                  </h3>
-                  <p className="text-sm text-kt-grey leading-relaxed">{phase.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Contact Section - Darkest */}
-        <section id="contact" className="py-20 px-4 bg-kt-black-accent relative overflow-hidden">
-          <SnakeMazeBackground />
-          <div className="max-w-4xl mx-auto text-center relative" style={{ zIndex: 10, position: 'relative' }}>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-kt-gold-light mb-6">
-              Get in touch
-            </h2>
-            <p className="text-lg text-kt-cream leading-relaxed mb-8">
-              Curious about what we're building, or want to follow our work? We're always open to a conversation.
-            </p>
-            <a
-              href="mailto:ra.eesa@kabirtechnologies.co.uk"
-              className="inline-block px-8 py-4 bg-gradient-to-r from-kt-gold-light to-kt-gold text-white font-medium rounded-xl hover:shadow-lg hover:shadow-kt-gold/30 hover:scale-105 transition-all duration-200"
-            >
-              Contact Us
-            </a>
-          </div>
-        </section>
+        <About />
+        <Philosophy />
+        <Sectors />
+        <Lab />
+        <Approach />
+        <Credits />
+        <Contact />
       </main>
 
       <footer className="bg-kt-black text-kt-grey py-8 px-4 border-t border-kt-gold/10">

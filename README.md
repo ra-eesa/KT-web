@@ -8,8 +8,9 @@ Official website for Kabir Technologies - a deep-tech studio focused on building
 
 ## 🎨 Design Features
 
-- **Animated Snake Maze Background**: Dynamic canvas-based animation with intelligent DOM collision detection that navigates around content elements
-- **Smooth Color Transitions**: Animated green gradient effects flowing through the maze paths
+- **Cinematic Scroll Scenes**: The page plays as seven scenes in scroll order, from an opening shot of the pyramid to end credits
+- **Opening Shot**: The pyramid draws itself, the sector marks fly into place, and hovering or tapping a mark pulls focus to that sector
+- **Scalable KT Lab**: Each venture gets a title sequence generated from `src/data/ventures.js`, and the layout adapts to how many ventures exist
 - **Responsive Design**: Fully responsive layout that works seamlessly across all device sizes
 - **Gold & Dark Theme**: Sophisticated color scheme using gold accents on dark backgrounds
 - **Smooth Scroll Navigation**: One-page layout with smooth scrolling between sections
@@ -19,7 +20,7 @@ Official website for Kabir Technologies - a deep-tech studio focused on building
 - **React** - Frontend framework
 - **Vite** - Build tool and dev server
 - **Tailwind CSS** - Utility-first CSS framework
-- **HTML5 Canvas** - For animated background effects
+- **HTML5 Canvas** - For the gold dust in the opening shot
 - **PostCSS** - CSS processing
 - **ESLint** - Code linting
 
@@ -29,7 +30,10 @@ Official website for Kabir Technologies - a deep-tech studio focused on building
 KT-Web/
 ├── public/           # Static assets (logo, favicon)
 ├── src/              # Source files
-│   ├── components/   # React components
+│   ├── components/   # One component per scene, plus TitleCard, LowerThird, GoldDust
+│   ├── data/         # sectors.js, ventures.js, studio.js (page content)
+│   ├── hooks/        # Scroll progress, in-view and media query hooks
+│   ├── cinema.css    # Scene styles and the motion system
 │   └── main.jsx      # Application entry point
 ├── index.html        # HTML entry point
 ├── vite.config.js    # Vite configuration
@@ -84,19 +88,28 @@ npm run preview
 - **Philosophy** - Core principles and values
 - **Sectors** - The five focus areas (Heritage & Architecture, Agriculture & Water Systems, Healthcare & Diagnostics, Biodiversity & Climate, Space & Frontier Systems)
 - **KT Lab** - Internal prototype laboratory
-- **Approach** - Four-step process (Discover, Prototype, Validate, Scale/Exit)
+- **How we build** - Four-step process (Identify, Build, Stress-test, Release)
 - **Contact** - Get in touch
 
 ## 🎨 Custom Features
 
-### Snake Maze Animation
+### Scenes
 
-The background features a custom canvas-based animation that:
-- Generates animated "snake" paths that grow and fade
-- Intelligently avoids overlapping with text and content using DOM collision detection
-- Uses smooth interpolation for fluid movement
-- Implements easing functions for organic motion
-- Adapts to different screen sizes and pixel densities
+| Scene | Section | What moves |
+| --- | --- | --- |
+| 01 | Hero | Letterbox, pyramid draw, sector marks fly in, focus pull on hover/tap. Plays once per browser session. |
+| 02 | About | Camera pushes through the apex while the statement rises in |
+| 03 | Philosophy | A lit path routes through the maze and reaches each principle |
+| 04 | Sectors | Pinned dive into the pyramid, one pillar per step, each with its own colour grade |
+| 05 | KT Lab | Venture title sequences. 1–3 ventures: feature, 4–8: reel, 9+: filterable index |
+| 06 | How we build | A gold mark travels the four-step track |
+| 07 | Credits / Contact | Scroll-rolled credits, then the contact card |
+
+Pinned scenes use `position: sticky` and `useScrollProgress`, which writes scroll progress to a `--p` CSS variable. Phones and short screens get unpinned layouts, and `prefers-reduced-motion` shows every scene in its final frame.
+
+### Adding a venture
+
+Add one entry to `src/data/ventures.js`. Its `sector` picks the icon and colour grade, and the Lab layout and the credits update automatically.
 
 ### Responsive Color System
 

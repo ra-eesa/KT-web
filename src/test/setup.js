@@ -39,3 +39,6 @@ Object.defineProperty(window, 'matchMedia', {
 
 // Mock scrollTo
 window.scrollTo = vi.fn();
+
+// jsdom has no canvas; components skip drawing when there is no context
+HTMLCanvasElement.prototype.getContext = () => null;

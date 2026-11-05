@@ -1,11 +1,37 @@
 import { useState, useEffect, useRef } from 'react';
 import { sectors } from '../data/sectors';
-import SectorCard from './SectorCard';
+import GoldDust from './GoldDust';
+import LowerThird from './LowerThird';
+import { usePrefersReducedMotion } from '../hooks/useMedia';
+
+// Scene 01, the opening shot. Plays once per browser session.
+export const INTRO_KEY = 'kt-intro-played';
+
+// How far each sector mark drifts with the pointer (parallax depth)
+const DEPTH = { heritage: 0.7, agriculture: 1.2, healthcare: 0.9, biodiversity: 1.4, space: 0.5 };
+
+function introAlreadyPlayed() {
+  try {
+    return sessionStorage.getItem(INTRO_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+const pad = (n) => String(n).padStart(2, '0');
+const formatTimecode = (frames) =>
+  `00:${pad(Math.floor(frames / 1440) % 60)}:${pad(Math.floor(frames / 24) % 60)}:${pad(frames % 24)}`;
 
 export default function LogoHero() {
+  const reducedMotion = usePrefersReducedMotion();
   const [activeSector, setActiveSector] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-  const sectorCardRef = useRef(null);
+  const [playIntro] = useState(() => !introAlreadyPlayed());
+  const heroRef = useRef(null);
+  const pyramidRef = useRef(null);
+  const timecodeRef = useRef(null);
+  const lowerThirdRef = useRef(null);
+  const pointer = useRef({ x: 0, y: 0 });
 
   // Detect screen size for responsive icon positioning
   useEffect(() => {
@@ -18,19 +44,26 @@ export default function LogoHero() {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
-  // Handle click outside to close card on mobile
+  useEffect(() => {
+    if (!playIntro) return;
+    try {
+      sessionStorage.setItem(INTRO_KEY, '1');
+    } catch {
+      // Storage blocked: the intro simply plays again next time
+    }
+  }, [playIntro]);
+
+  // Handle click outside to close the caption on mobile
   useEffect(() => {
     if (!activeSector) return;
 
     const handleClickOutside = (event) => {
-      // Only on mobile (check window width directly for immediate response)
       if (window.innerWidth >= 1024) return;
 
-      // Check if click is outside sector card and not on a sector button
       const isClickOnButton = event.target.closest('[data-sector-button]');
-      const isClickOnCard = sectorCardRef.current?.contains(event.target);
+      const isClickOnCaption = lowerThirdRef.current?.contains(event.target);
 
-      if (!isClickOnButton && !isClickOnCard) {
+      if (!isClickOnButton && !isClickOnCaption) {
         setActiveSector(null);
       }
     };
@@ -39,31 +72,86 @@ export default function LogoHero() {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [activeSector]);
 
+  // Camera drift toward the pointer, and the running timecode
+  useEffect(() => {
+    if (reducedMotion) return undefined;
+    const hero = heroRef.current;
+    const pyramid = pyramidRef.current;
+    const start = performance.now();
+    let frame = 0;
+    let visible = true;
+    let cx = 0;
+    let cy = 0;
+
+    const tick = () => {
+      frame = 0;
+      if (!visible) return;
+      cx += (pointer.current.x - cx) * 0.06;
+      cy += (pointer.current.y - cy) * 0.06;
+      pyramid.style.setProperty('--ry', `${(cx * 12).toFixed(2)}deg`);
+      pyramid.style.setProperty('--rx', `${(-cy * 8).toFixed(2)}deg`);
+      pyramid.style.setProperty('--px', (cx * 26).toFixed(2));
+      pyramid.style.setProperty('--py', (cy * 26).toFixed(2));
+      if (timecodeRef.current) {
+        timecodeRef.current.textContent = formatTimecode(
+          Math.floor(((performance.now() - start) * 24) / 1000)
+        );
+      }
+      frame = requestAnimationFrame(tick);
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible && !frame) frame = requestAnimationFrame(tick);
+    });
+    observer.observe(hero);
+    frame = requestAnimationFrame(tick);
+
+    return () => {
+      observer.disconnect();
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [reducedMotion]);
+
+  const handlePointerMove = (event) => {
+    if (event.pointerType !== 'mouse') return;
+    const rect = heroRef.current.getBoundingClientRect();
+    pointer.current = {
+      x: (event.clientX - rect.left) / rect.width - 0.5,
+      y: (event.clientY - rect.top) / rect.height - 0.5,
+    };
+  };
+
+  const handlePointerLeave = () => {
+    pointer.current = { x: 0, y: 0 };
+  };
+
   const handleSectorClick = (sector) => {
-    // Check if mobile at click time
     const isMobileView = window.innerWidth < 1024;
 
     if (isMobileView) {
-      // Toggle behavior on mobile: clicking same sector closes it
+      // Toggle behavior on mobile: tapping the same sector closes it
       setActiveSector(activeSector?.id === sector.id ? null : sector);
     } else {
-      // Desktop: just show the card
       setActiveSector(sector);
     }
   };
 
   const handleSectorHover = (sector) => {
-    // Only handle hover on desktop
     if (window.innerWidth >= 1024) {
       setActiveSector(sector);
     }
   };
 
   const handleSectorLeave = () => {
-    // Only handle mouse leave on desktop
     if (window.innerWidth >= 1024) {
       setActiveSector(null);
     }
+  };
+
+  const handleSectorFocus = (event, sector) => {
+    // Keyboard focus pulls focus too; taps are handled by click
+    if (event.currentTarget.matches?.(':focus-visible')) setActiveSector(sector);
   };
 
   const scrollToSection = (id) => {
@@ -71,120 +159,103 @@ export default function LogoHero() {
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-kt-black via-kt-black to-kt-black-lighter flex flex-col items-center px-4 py-20 relative overflow-hidden">
+    <section
+      ref={heroRef}
+      className={`kt-hero min-h-screen ${playIntro && !reducedMotion ? 'play' : ''}`}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+    >
+      <GoldDust />
 
-      {/* Subtle grey texture overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-kt-black-lighter/20 via-transparent to-kt-black-lighter/10 pointer-events-none"></div>
+      <div className="kt-bar kt-bar-top" aria-hidden="true" />
 
-      {/* Early-stage badge - LEFT SIDE */}
-      <div className="relative w-full max-w-7xl mt-12 mb-6 md:mt-16 md:mb-0 z-10">
-        <span className="inline-block text-[10px] font-semibold uppercase tracking-[0.2em] text-kt-gold-light bg-kt-forest/20 border border-kt-gold/30 px-5 py-2.5 rounded-full">
-          Early-stage deep tech studio
-        </span>
-      </div>
+      <div className="kt-hero-main">
+        <span className="kt-badge">Early-stage deep tech studio</span>
 
-      {/* CENTERED CONTENT WITH SIDE CARDS */}
-      <div className="relative z-10 flex flex-col items-center space-y-8 md:space-y-12 max-w-7xl w-full flex-1 justify-center pt-4 md:pt-0">
-        
-        {/* LOGO + SIDE CARDS CONTAINER */}
-        <div className="relative w-full flex items-center justify-center">
-          
-          {/* LEFT SECTOR CARD */}
-          <div className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12">
-            {activeSector && activeSector.cardPosition === 'left' && (
-              <SectorCard sector={activeSector} position="left" />
-            )}
-          </div>
+        <div className="kt-rig">
+          <div
+            ref={pyramidRef}
+            className="kt-pyr"
+            data-focusing={activeSector ? 'true' : 'false'}
+          >
+            <div className="kt-pyr-glow" aria-hidden="true" />
+            <svg className="kt-frame-draw" viewBox="0 0 682 682" aria-hidden="true">
+              <defs>
+                <linearGradient id="kt-gold-stroke" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset=".06" stopColor="#ffd173" />
+                  <stop offset=".8" stopColor="#8b703c" />
+                  <stop offset="1" stopColor="#816837" />
+                </linearGradient>
+              </defs>
+              <polygon points="341,61 5,619 677,619" pathLength="1" />
+            </svg>
 
-          {/* MAIN LOGO - Responsive sizing for mobile */}
-          <div className="relative w-full max-w-[280px] sm:max-w-sm md:max-w-xl lg:max-w-2xl aspect-square flex items-center justify-center">
-            
-            {/* Glow effects behind logo */}
-            <div className="absolute inset-0 bg-gradient-radial from-kt-gold/5 via-kt-gold/2 to-transparent rounded-full blur-3xl animate-pulse-slow"></div>
-            <div className="absolute inset-0 scale-75 bg-gradient-radial from-kt-gold/8 via-transparent to-transparent rounded-full blur-2xl"></div>
-            
-            {/* Main Logo Image (base layer) */}
-            <img
-              src="/logo-main.svg"
-              alt="Kabir Technologies"
-              className="relative w-full h-full object-contain drop-shadow-2xl z-10"
-            />
+            <div className="kt-logo-clip">
+              <img src="/logo-main.svg" alt="Kabir Technologies" className="kt-logo" />
+              <div className="kt-sheen" aria-hidden="true" />
+            </div>
 
-            {/* Interactive Sector Icon Overlays */}
-            {sectors.map((sector) => {
+            {sectors.map((sector, k) => {
               const hotspot = isMobile ? sector.hotspot.mobile : sector.hotspot.desktop;
+              const isActive = activeSector?.id === sector.id;
               return (
                 <button
                   key={sector.id}
+                  type="button"
                   data-sector-button
+                  data-sector={sector.id}
                   onMouseEnter={() => handleSectorHover(sector)}
                   onMouseLeave={handleSectorLeave}
+                  onFocus={(event) => handleSectorFocus(event, sector)}
+                  onBlur={handleSectorLeave}
                   onClick={() => handleSectorClick(sector)}
                   aria-label={`Learn about ${sector.name}`}
-                  className="absolute -translate-x-1/2 -translate-y-1/2
-                           transition-all duration-300 cursor-pointer group
-                           focus:outline-none z-20"
+                  aria-pressed={isActive}
+                  className={`kt-hs ${isActive ? 'is-on' : ''}`}
                   style={{
                     left: hotspot.left,
                     top: hotspot.top,
+                    '--w': sector.id === 'space' ? '11.9%' : '9.5%',
+                    '--k': k,
+                    '--z': DEPTH[sector.id] ?? 1,
+                    '--fx': `${Math.round((parseFloat(hotspot.left) - 50) * 14)}%`,
+                    '--fy': `${Math.round((parseFloat(hotspot.top) - 55) * 14)}%`,
                   }}
                 >
-                {/* Sector Icon */}
-                <img
-                  src={sector.icon}
-                  alt={sector.name}
-                  className={`object-contain transition-all duration-300
-                           group-hover:scale-125 group-hover:drop-shadow-[0_0_12px_rgba(245,214,137,0.8)]
-                           group-focus:scale-125 group-focus:drop-shadow-[0_0_12px_rgba(245,214,137,0.8)]
-                           ${activeSector?.id === sector.id ? 'scale-125 drop-shadow-[0_0_12px_rgba(245,214,137,0.8)]' : ''}
-                           ${sector.id === 'space' ? 'w-7 h-7 sm:w-8 sm:h-8 md:w-16 md:h-16 lg:w-20 lg:h-20' : 'w-6 h-6 sm:w-7 sm:h-7 md:w-14 md:h-14 lg:w-16 lg:h-16'}`}
-                />
-                
-                {/* Subtle glow ring on hover or active */}
-                <span className={`absolute left-0 top-1/2 -translate-y-1/2 rounded-full transition-all duration-300 -z-10 scale-150
-                               ${activeSector?.id === sector.id ? 'bg-kt-gold/10' : 'bg-kt-gold/0 group-hover:bg-kt-gold/10 group-focus:bg-kt-gold/10'}
-                               ${sector.id === 'space' ? 'w-7 h-7 sm:w-8 sm:h-8 md:w-16 md:h-16 lg:w-20 lg:h-20' : 'w-6 h-6 sm:w-7 sm:h-7 md:w-14 md:h-14 lg:w-16 lg:h-16'}`}></span>
-              </button>
+                  <span className="kt-fly">
+                    <img src={sector.icon} alt={sector.name} className="kt-ico" />
+                    <span className="kt-ring" aria-hidden="true" />
+                  </span>
+                </button>
               );
             })}
           </div>
-
-          {/* RIGHT SECTOR CARD */}
-          <div className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-12">
-            {activeSector && activeSector.cardPosition === 'right' && (
-              <SectorCard sector={activeSector} position="right" />
-            )}
-          </div>
         </div>
 
-        {/* Interaction Instruction - BELOW LOGO (replaces title) */}
-        <div className="text-center space-y-3 -mt-4 md:-mt-12">
-          <p className="text-kt-gold-light/90 text-base md:text-lg font-medium">
-            <span className="lg:inline hidden">Hover over an icon to discover each sector</span>
-            <span className="lg:hidden">Tap an icon to discover each sector</span>
-          </p>
-          <p className="text-kt-grey text-sm md:text-base max-w-2xl leading-relaxed">
+        <p className="kt-hint">
+          <span className="lg:inline hidden">Hover over an icon to discover each sector</span>
+          <span className="lg:hidden">Tap an icon to discover each sector</span>
+        </p>
+
+        <LowerThird ref={lowerThirdRef} sector={activeSector} />
+      </div>
+
+      <div className="kt-bar kt-bar-bot">
+        <span className="kt-mono kt-hud">
+          SC 01 · {activeSector ? `Focus · ${activeSector.name.split(' ')[0]}` : 'Ignition'}
+        </span>
+        <div className="kt-bot-center">
+          <p className="kt-subtitle">
             Turning complex, under-served problems into quietly powerful prototypes.
           </p>
+          <button type="button" onClick={() => scrollToSection('about')} className="kt-enter">
+            <span>Enter the maze</span>
+            <span aria-hidden="true" className="kt-enter-arrow">↓</span>
+          </button>
         </div>
-
-        {/* MOBILE: Show sector card below instruction */}
-        <div ref={sectorCardRef} className="lg:hidden w-full max-w-xl px-4">
-          {activeSector && (
-            <SectorCard sector={activeSector} position="center" />
-          )}
-        </div>
-
-        {/* Scroll Hint - BOTTOM CENTER */}
-        <button
-          onClick={() => scrollToSection('about')}
-          className="group flex flex-col items-center gap-2 text-kt-gold-light/70 hover:text-kt-gold transition-all duration-300 mt-8"
-        >
-          <span className="text-sm font-medium tracking-wide">Enter the maze</span>
-          <span className="text-2xl animate-bounce-slow group-hover:translate-y-1 transition-transform">
-            ↓
-          </span>
-        </button>
+        <span ref={timecodeRef} className="kt-mono kt-hud kt-hud-right" aria-hidden="true">
+          00:00:00:00
+        </span>
       </div>
     </section>
   );
