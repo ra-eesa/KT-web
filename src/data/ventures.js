@@ -1,11 +1,13 @@
-// One entry per KT Lab venture. The title card's colour grade and mark come
-// from `sector` (see sectors.js); set `icon` to use the venture's own mark instead.
+// One entry per KT Lab venture. The title card's colour grade comes from `sector`
+// (see sectors.js). The picture on the card is the venture's own `icon` when it has
+// branding; otherwise it falls back to its sector's KT icon, then the KT monogram.
 export const ventures = [
   {
     id: "aqvera",
     name: "Aqvera",
     sector: "agriculture",
     tag: "Agriculture & Water",
+    icon: "/brand-aqvera-icon.svg",
     phase: { step: 3, label: "Live" },
     logline:
       "Satellite-powered abstraction fairness and licence-risk scoring for UK water regulators and river trusts.",

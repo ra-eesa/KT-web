@@ -17,6 +17,10 @@ describe('ventures data', () => {
     });
   });
 
+  it('uses its own branding for Aqvera', () => {
+    expect(ventures.find((v) => v.id === 'aqvera').icon).toBe('/brand-aqvera-icon.svg');
+  });
+
   it('gives every sector a colour grade', () => {
     sectors.forEach((s) => expect(s.grade).toBeTruthy());
   });

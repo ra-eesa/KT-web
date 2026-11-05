@@ -75,6 +75,14 @@ describe('Scene 05 - KT Lab', () => {
     expect(screen.getByText('Phase 3 · Live')).toBeInTheDocument();
   });
 
+  it('shows Aqvera\'s own picture, and the KT sector icon for ventures without branding', () => {
+    const { container } = render(<Lab />);
+    expect(container.querySelector('.kt-tc-icon')).toHaveAttribute('src', '/brand-aqvera-icon.svg');
+
+    const { container: plain } = render(<Lab ventures={exampleVentures(1)} />);
+    expect(plain.querySelector('.kt-tc-icon')).toHaveAttribute('src', sectors[0].icon);
+  });
+
   it('no longer lists the special commission', () => {
     render(<Lab />);
     expect(screen.queryByText(/special commission/i)).not.toBeInTheDocument();
